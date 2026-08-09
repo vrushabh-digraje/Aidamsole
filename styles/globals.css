@@ -1,0 +1,344 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+:root {
+  /* Brand */
+  --primary: #1e3a8a;
+  --primary-soft: #dbeafe;
+  --primary-muted: #eff6ff;
+  --secondary: #64748b;
+  --secondary-soft: #f1f5f9;
+  --accent: #3b82f6;
+  --accent-soft: #eff6ff;
+  --danger: #dc2626;
+
+  /* Neutrals */
+  --gray-900: #0f172a;
+  --gray-800: #1e293b;
+  --gray-700: #334155;
+  --gray-600: #475569;
+  --gray-500: #64748b;
+  --gray-400: #94a3b8;
+  --gray-300: #cbd5e1;
+  --gray-200: #e2e8f0;
+  --gray-100: #f1f5f9;
+  --gray-50: #f8fafc;
+
+  --background: #ffffff;
+  --surface-muted: #f8fafc;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-muted: var(--primary-muted);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+
+  --color-gray-900: var(--gray-900);
+  --color-gray-800: var(--gray-800);
+  --color-gray-700: var(--gray-700);
+  --color-gray-600: var(--gray-600);
+  --color-gray-500: var(--gray-500);
+  --color-gray-400: var(--gray-400);
+  --color-gray-300: var(--gray-300);
+  --color-gray-200: var(--gray-200);
+  --color-gray-100: var(--gray-100);
+  --color-gray-50: var(--gray-50);
+
+  --color-background: var(--background);
+  --color-surface-muted: var(--surface-muted);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-background font-sans text-base leading-relaxed text-gray-600 antialiased;
+  }
+
+  h1 {
+    @apply text-4xl font-bold tracking-tight text-gray-900 md:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl font-semibold tracking-tight text-gray-900;
+  }
+
+  h4 {
+    @apply text-base font-semibold tracking-tight text-gray-900;
+  }
+
+  p {
+    @apply text-base leading-snug text-gray-600;
+  }
+
+  /* Content hierarchy spacing — section / marketing copy */
+  .section-copy > h1,
+  .section-copy > h2,
+  .section-copy > h3,
+  .section-copy > h4,
+  main > section h1,
+  main > section h2 {
+    @apply mb-4;
+  }
+
+  .section-copy > p,
+  .section-lede,
+  main > section .section-copy p {
+    @apply mb-6;
+  }
+
+  strong {
+    @apply font-semibold text-gray-900;
+  }
+
+  label {
+    @apply text-xs font-semibold uppercase tracking-wide text-gray-400;
+  }
+
+  /* Global link polish — opt out with .no-underline on controls/cards */
+  a {
+    @apply underline-offset-4 transition duration-300 ease-in-out;
+  }
+
+  a:hover {
+    @apply underline;
+  }
+
+  a.no-underline:hover,
+  a.no-underline {
+    @apply no-underline;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
+
+@layer components {
+  /* —— Layout —— */
+  .ds-container {
+    @apply mx-auto max-w-7xl px-6;
+  }
+
+  .section {
+    @apply border-b border-gray-200 bg-white py-20;
+  }
+
+  .section-compact {
+    @apply py-16;
+  }
+
+  .section-prominent {
+    @apply py-28;
+  }
+
+  .section-muted {
+    @apply bg-gray-50;
+  }
+
+  .section-copy {
+    @apply max-w-2xl;
+  }
+
+  .section-lede {
+    @apply mb-6 max-w-2xl text-base leading-snug text-gray-600;
+  }
+
+  .section-stack {
+    @apply mt-10;
+  }
+
+  .body-clamp {
+    @apply line-clamp-2;
+  }
+
+  /* —— Typography —— */
+  .ds-label {
+    @apply text-xs font-semibold uppercase tracking-wide text-gray-400;
+  }
+
+  .ds-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-wide text-gray-400;
+  }
+
+  .ds-body {
+    @apply mb-6 text-base leading-snug text-gray-600;
+  }
+
+  /* —— Surfaces & motion —— */
+  .ds-interactive {
+    @apply transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md;
+  }
+
+  .surface {
+    @apply rounded-xl border border-gray-200 bg-white shadow-sm transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md;
+  }
+
+  .ds-card {
+    @apply rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md;
+  }
+
+  .ds-card-static {
+    @apply rounded-xl border border-gray-200 bg-white p-6 shadow-sm;
+  }
+
+  .ds-panel {
+    @apply rounded-xl border border-gray-200 bg-gray-50;
+  }
+
+  .ds-highlight {
+    @apply rounded-xl border border-accent/20 bg-accent-soft;
+  }
+
+  .icon-box {
+    @apply flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-primary transition duration-300 ease-in-out;
+  }
+
+  /* —— Buttons —— */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold no-underline transition duration-300 ease-in-out hover:scale-[1.02] hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply btn bg-blue-700 text-white shadow-sm hover:bg-blue-800 focus-visible:outline-blue-700;
+  }
+
+  .btn-secondary {
+    @apply btn border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-primary;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent px-4 text-gray-700 hover:bg-gray-50 hover:text-primary focus-visible:outline-primary;
+  }
+
+  /* —— Demo motion (product walkthroughs) —— */
+  .animate-demo-progress {
+    transform-origin: left center;
+    animation: demo-progress 2.5s linear forwards;
+  }
+
+  .animate-demo-fade {
+    animation: demo-fade 300ms ease-in-out forwards;
+  }
+
+  /* —— System flow motion —— */
+  .animate-flow-arrow-x {
+    animation: flow-arrow-x 1.5s ease-in-out infinite;
+  }
+
+  .animate-flow-arrow-y {
+    animation: flow-arrow-y 1.5s ease-in-out infinite;
+  }
+
+  .animate-flow-travel-x {
+    animation: flow-travel-x 2.2s ease-in-out infinite;
+  }
+
+  .animate-flow-travel-y {
+    animation: flow-travel-y 2.2s ease-in-out infinite;
+  }
+
+  .animate-flow-node {
+    animation: flow-node-pulse 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes demo-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes demo-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flow-arrow-x {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+}
+
+@keyframes flow-arrow-y {
+  0%,
+  100% {
+    transform: translateY(0) rotate(90deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(5px) rotate(90deg);
+    opacity: 1;
+  }
+}
+
+@keyframes flow-travel-x {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(220%);
+    opacity: 0;
+  }
+}
+
+@keyframes flow-travel-y {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(220%);
+    opacity: 0;
+  }
+}
+
+@keyframes flow-node-pulse {
+  0%,
+  100% {
+    box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px rgb(37 99 235 / 0.1),
+      0 8px 16px -4px rgb(37 99 235 / 0.2);
+  }
+}
