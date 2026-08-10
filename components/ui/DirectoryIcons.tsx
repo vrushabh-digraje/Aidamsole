@@ -30,6 +30,7 @@ export function DirectoryIcon({
       );
     case "marketing":
     case "marketing-automation":
+    case "campaigns":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
           <path
@@ -45,6 +46,7 @@ export function DirectoryIcon({
       );
     case "delivery":
     case "delivery-project-system":
+    case "operations-system":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
           <path d="M9 11l3 3L22 4" stroke="currentColor" />
@@ -54,8 +56,17 @@ export function DirectoryIcon({
           />
         </svg>
       );
+    case "support":
+    case "support-system":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
+          <circle cx="12" cy="12" r="8" stroke="currentColor" />
+          <path d="M12 8v5M12 16h.01" stroke="currentColor" />
+        </svg>
+      );
     case "finance":
     case "finance-operations":
+    case "finance-system":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
           <path
@@ -67,12 +78,32 @@ export function DirectoryIcon({
       );
     case "dashboard":
     case "leadership-dashboard":
+    case "analytics":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
           <rect x="3" y="3" width="7" height="9" rx="1" stroke="currentColor" />
           <rect x="14" y="3" width="7" height="5" rx="1" stroke="currentColor" />
           <rect x="14" y="12" width="7" height="9" rx="1" stroke="currentColor" />
           <rect x="3" y="16" width="7" height="5" rx="1" stroke="currentColor" />
+        </svg>
+      );
+    case "crm":
+    case "books":
+    case "inventory":
+    case "projects":
+    case "people":
+    case "desk":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
+          <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" />
+          <path d="M8 9h8M8 12h8M8 15h5" stroke="currentColor" />
+        </svg>
+      );
+    case "creator":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
+          <path d="M12 3v18M3 12h18" stroke="currentColor" />
+          <rect x="5" y="5" width="14" height="14" rx="2" stroke="currentColor" />
         </svg>
       );
     case "real-estate":
@@ -95,9 +126,11 @@ export function DirectoryIcon({
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
           <path
-            d="M3 20h18M5 20V10l4 3 4-5 4 4 2-2v10"
+            d="M3 21h18M5 21V10l5 3V8l5 3V6l4 2v13"
             stroke="currentColor"
+            strokeLinejoin="round"
           />
+          <path d="M8 21v-4M12 21v-6M16 21v-3" stroke="currentColor" />
         </svg>
       );
     case "education":
@@ -108,6 +141,7 @@ export function DirectoryIcon({
         </svg>
       );
     case "retail":
+    case "retail-distribution":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
           <path
@@ -123,6 +157,7 @@ export function DirectoryIcon({
           <path d="M10 21v-5h4v5" stroke="currentColor" />
         </svg>
       );
+    case "service":
     case "it-services":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">

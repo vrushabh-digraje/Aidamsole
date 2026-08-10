@@ -7,7 +7,20 @@ export type Industry = {
   outcome: string;
 };
 
+/** Legacy short cards — prefer `lib/data/industries` for published pages. */
 export const industries: Industry[] = [
+  {
+    slug: "retail-distribution",
+    title: "Retail & Distribution",
+    summary:
+      "Dealer enquiries, order follow-up, stock handoffs, and collections on one Zoho process.",
+    problem:
+      "Dealer and retailer leads fragment across WhatsApp and sheets. Order and stock status disagree.",
+    approach:
+      "Zoho CRM and Inventory designed around enquiry ownership, order stages, and dispatch visibility.",
+    outcome:
+      "One operating view for sales and ops — fewer missed follow-ups and stock surprises.",
+  },
   {
     slug: "real-estate",
     title: "Real Estate",
@@ -19,6 +32,18 @@ export const industries: Industry[] = [
       "Zoho CRM designed around enquiry ownership, visit stages, and sales-to-handover handoffs.",
     outcome:
       "One pipeline for leadership reviews, with fewer duplicate leads and missed follow-ups.",
+  },
+  {
+    slug: "manufacturing",
+    title: "Manufacturing",
+    summary:
+      "Enquiry-to-delivery with quote ownership, production milestones, and collections.",
+    problem:
+      "Quotes live in email. Production status is invisible to sales after order confirmation.",
+    approach:
+      "CRM to Projects to Books mapped as one enquiry-to-delivery process.",
+    outcome:
+      "Sales and shop floor share status; collections follow delivered milestones.",
   },
   {
     slug: "healthcare",

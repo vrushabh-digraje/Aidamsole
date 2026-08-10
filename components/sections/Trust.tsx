@@ -31,14 +31,14 @@ type TrustProps = {
 };
 
 const defaultLogos: TrustLogo[] = [
-  { id: "horizon", name: "Horizon Realty", accentClass: "group-hover:text-blue-700" },
+  { id: "horizon", name: "Horizon Estates", accentClass: "group-hover:text-blue-700" },
   { id: "medcare", name: "MedCare Clinics", accentClass: "group-hover:text-sky-700" },
-  { id: "apex", name: "Apex Manufacturing", accentClass: "group-hover:text-indigo-700" },
-  { id: "northstar", name: "Northstar Edu", accentClass: "group-hover:text-blue-800" },
-  { id: "urban", name: "Urban Retail Co", accentClass: "group-hover:text-slate-800" },
+  { id: "apex", name: "Apex Distributors", accentClass: "group-hover:text-indigo-700" },
+  { id: "northstar", name: "Northstar Retail", accentClass: "group-hover:text-blue-800" },
+  { id: "urban", name: "Urban Learn", accentClass: "group-hover:text-slate-800" },
   { id: "buildwell", name: "BuildWell Infra", accentClass: "group-hover:text-blue-700" },
-  { id: "prime", name: "Prime Interiors", accentClass: "group-hover:text-indigo-800" },
-  { id: "vertex", name: "Vertex Services", accentClass: "group-hover:text-sky-800" },
+  { id: "prime", name: "Prime Service Co", accentClass: "group-hover:text-blue-700" },
+  { id: "vertex", name: "Vertex Manufacturing", accentClass: "group-hover:text-indigo-800" },
 ];
 
 const defaultTestimonial: TrustTestimonial = {
@@ -116,8 +116,8 @@ function LogoMark({ id }: { id: string }) {
 }
 
 export function Trust({
-  title = "Trusted by growing companies",
-  description = "Mid-market teams across India and the GCC running sales, operations, and finance on Zoho.",
+  title = "Teams we design systems for",
+  description = "Illustrative client marks for layout — replace with approved logos when cleared for publishing.",
   logos = defaultLogos,
   testimonial = defaultTestimonial,
   showTestimonial = true,
@@ -147,36 +147,38 @@ export function Trust({
         ) : null}
       </div>
 
-      <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-        {logos.map((logo) => (
-          <li key={logo.id}>
-            <div
-              className={cn(
-                "group flex h-24 items-center justify-center gap-2.5 rounded-xl border border-gray-200 bg-white px-4 shadow-sm transition duration-300 ease-in-out",
-                "hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md",
-              )}
-            >
-              <span
+      {logos.length > 0 ? (
+        <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+          {logos.map((logo) => (
+            <li key={logo.id}>
+              <div
                 className={cn(
-                  "text-gray-400 grayscale transition duration-300 ease-in-out",
-                  "group-hover:grayscale-0 group-hover:text-blue-700",
-                  logo.accentClass,
+                  "group flex h-24 items-center justify-center gap-2.5 rounded-xl border border-gray-200 bg-white px-4 shadow-sm transition duration-300 ease-in-out",
+                  "hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md",
                 )}
               >
-                <LogoMark id={logo.id} />
-              </span>
-              <span
-                className={cn(
-                  "text-sm font-semibold tracking-tight text-gray-400 grayscale transition duration-300 ease-in-out",
-                  "group-hover:grayscale-0 group-hover:text-gray-900",
-                )}
-              >
-                {logo.name}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
+                <span
+                  className={cn(
+                    "text-gray-400 grayscale transition duration-300 ease-in-out",
+                    "group-hover:grayscale-0 group-hover:text-blue-700",
+                    logo.accentClass,
+                  )}
+                >
+                  <LogoMark id={logo.id} />
+                </span>
+                <span
+                  className={cn(
+                    "text-sm font-semibold tracking-tight text-gray-400 grayscale transition duration-300 ease-in-out",
+                    "group-hover:grayscale-0 group-hover:text-gray-900",
+                  )}
+                >
+                  {logo.name}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {showTestimonial && testimonial ? (
         <figure className="mx-auto mt-12 max-w-3xl rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm md:p-8">

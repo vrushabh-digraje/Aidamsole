@@ -86,8 +86,8 @@ export function ConnectedSystemExperience() {
       <InteractiveSystemDemo
         tone="default"
         spacing="prominent"
-        title="How Your Business System Works"
-        description="Click CRM, Deal, or Dashboard — the product preview below switches with you."
+        title="See how a Zoho system works"
+        description="Walk through lead capture to leadership view — then see the CRM preview update with each step."
         activeStepId={systemStepId}
         onStepChange={applySystemStep}
       />
@@ -95,7 +95,7 @@ export function ConnectedSystemExperience() {
       <CRMPreviewDemo
         tone="muted"
         spacing="prominent"
-        title="Your CRM. Working Like a Product."
+        title="CRM preview"
         description={crmDescription}
         activeView={crmView}
         onViewChange={handleCrmViewChange}

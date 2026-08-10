@@ -69,6 +69,18 @@
     @apply text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl;
   }
 
+  /* Dark sections — force readable text over global heading colors */
+  .bg-primary h1,
+  .bg-primary h2,
+  .bg-primary h3,
+  .bg-primary h4 {
+    color: #fff;
+  }
+
+  .bg-primary p {
+    color: rgb(255 255 255 / 0.85);
+  }
+
   h3 {
     @apply text-xl font-semibold tracking-tight text-gray-900;
   }
@@ -204,21 +216,21 @@
     @apply flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-primary transition duration-300 ease-in-out;
   }
 
-  /* —— Buttons —— */
+  /* —— Buttons (inline base; Tailwind v4 cannot @apply custom .btn) —— */
   .btn {
     @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold no-underline transition duration-300 ease-in-out hover:scale-[1.02] hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60;
   }
 
   .btn-primary {
-    @apply btn bg-blue-700 text-white shadow-sm hover:bg-blue-800 focus-visible:outline-blue-700;
+    @apply inline-flex items-center justify-center rounded-lg bg-blue-700 px-6 py-3 text-sm font-semibold text-white no-underline shadow-sm transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-blue-800 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:opacity-60;
   }
 
   .btn-secondary {
-    @apply btn border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 focus-visible:outline-primary;
+    @apply inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-900 no-underline transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-gray-100 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60;
   }
 
   .btn-ghost {
-    @apply btn bg-transparent px-4 text-gray-700 hover:bg-gray-50 hover:text-primary focus-visible:outline-primary;
+    @apply inline-flex items-center justify-center rounded-lg bg-transparent px-4 py-3 text-sm font-semibold text-gray-700 no-underline transition duration-300 ease-in-out hover:scale-[1.02] hover:bg-gray-50 hover:text-primary hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60;
   }
 
   /* —— Demo motion (product walkthroughs) —— */

@@ -1,236 +1,201 @@
-import { CTA, journeyCtas } from "@/components/sections/CTA";
+import type { Metadata } from "next";
+
+import { CaseStudyTeaser } from "@/components/sections/CaseStudyTeaser";
+import { CTA } from "@/components/sections/CTA";
+import { ConnectedSystemExperience } from "@/components/sections/ConnectedSystemExperience";
+import { Faq } from "@/components/sections/Faq";
 import { Grid } from "@/components/sections/Grid";
 import { Hero } from "@/components/sections/Hero";
+import { InsightsTeaser } from "@/components/sections/InsightsTeaser";
 import { ModuleGrid } from "@/components/sections/ModuleGrid";
-import { ConnectedSystemExperience } from "@/components/sections/ConnectedSystemExperience";
-import { ProblemGrid } from "@/components/sections/ProblemGrid";
+import { PartnerTrust } from "@/components/sections/PartnerTrust";
+import { ServicesGrid } from "@/components/sections/ServicesGrid";
+import { Stats, homepageStats } from "@/components/sections/Stats";
 import { SystemFlow } from "@/components/sections/SystemFlow";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { Trust } from "@/components/sections/Trust";
+import { WhyChoose } from "@/components/sections/WhyChoose";
+import { WhyZoho } from "@/components/sections/WhyZoho";
 import { DirectoryCard } from "@/components/ui/DirectoryCard";
 import { DirectoryIcon } from "@/components/ui/DirectoryIcons";
+import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { CTAS } from "@/lib/constants";
-import { megaMenu } from "@/lib/navigation";
+import {
+  getPublishedIndustries,
+  getPublishedPlatforms,
+} from "@/lib/published";
+import { STATIC_PAGES, buildPageMetadata } from "@/lib/seo";
 
-const problems = [
+export const metadata: Metadata = buildPageMetadata({
+  title: STATIC_PAGES.home.title,
+  description: STATIC_PAGES.home.description,
+  path: STATIC_PAGES.home.path,
+});
+
+const services = [
   {
-    icon: "leakage" as const,
-    title: "Leads scattered",
-    description: "WhatsApp, sheets, and inboxes — no single owner.",
+    title: "Consultation",
+    description:
+      "We map your current process — sales, operations, and finance — and define the right Zoho setup.",
+    icon: "consultation" as const,
   },
   {
-    icon: "pipeline" as const,
-    title: "No visibility",
-    description: "Sales, delivery, and finance status stay opaque.",
+    title: "Implementation",
+    description:
+      "CRM and connected Zoho apps configured to your workflows, ownership rules, and reporting needs.",
+    icon: "implementation" as const,
   },
   {
-    icon: "delay" as const,
-    title: "Manual handoffs",
-    description: "Work moves by chase, not by system rules.",
+    title: "Integration",
+    description:
+      "Connect Zoho with WhatsApp, portals, accounting, and existing tools so data stays in one place.",
+    icon: "connected" as const,
   },
   {
-    icon: "reporting" as const,
-    title: "Broken reporting",
-    description: "Leadership rebuilds numbers every week in Excel.",
+    title: "Training",
+    description:
+      "Role-based training so your team adopts the system from day one — not another unused login.",
+    icon: "training" as const,
+  },
+  {
+    title: "Support",
+    description:
+      "Ongoing help for enhancements, troubleshooting, and optimization as your business grows.",
+    icon: "support" as const,
   },
 ];
 
-const solutions = (
-  megaMenu.find((item) => item.type === "solutions")?.items ?? []
-).map((item) => ({
-  ...item,
-  description: item.description ?? "",
-}));
-
-const industryCopy: Record<string, string> = {
-  "Real Estate": "Lead to booking — sites, brokers, collections.",
-  Healthcare: "Patient intake, follow-ups, and clinic visibility.",
-  Manufacturing: "Enquiry to delivery across sales and production.",
-  Education: "Admissions, counselling, and fee control.",
-  Retail: "Store, ecommerce, and inventory in one flow.",
-  Construction: "Tenders, projects, billing, and site execution.",
-};
-
-const industries = [
-  "Real Estate",
-  "Healthcare",
-  "Manufacturing",
-  "Education",
-  "Retail",
-  "Construction",
-].map((label) => {
-  const navItem = megaMenu
-    .find((item) => item.type === "industries")
-    ?.items?.find((item) => item.label === label);
-
-  return {
-    label,
-    href:
-      navItem?.href ??
-      `/industries/${label.toLowerCase().replace(/\s+/g, "-")}`,
-    description: industryCopy[label] ?? "Process model for your sector.",
-    icon: navItem?.icon ?? label.toLowerCase().replace(/\s+/g, "-"),
-  };
-});
-
-const platform = [
+const faqs = [
   {
-    name: "CRM",
-    role: "Ownership and pipeline control across sales.",
-    group: "Sales" as const,
+    question: "What does a Zoho partner do?",
+    answer:
+      "A Zoho partner helps you choose the right Zoho apps, configure them to your process, migrate data, train your team, and support you after go-live — so Zoho becomes a working system, not just licenses.",
   },
   {
-    name: "SalesIQ",
-    role: "Website and chat capture tied to CRM ownership.",
-    group: "Sales" as const,
+    question: "How long does Zoho implementation take?",
+    answer:
+      "Most mid-sized CRM or focused system builds take a few weeks, depending on scope, data migration, and integrations. After a free consultation we share a clear timeline and phase plan.",
   },
   {
-    name: "Books",
-    role: "Invoices, payments, and collections.",
-    group: "Finance" as const,
+    question: "Can you migrate our data from Excel or another CRM?",
+    answer:
+      "Yes. We plan migration carefully — clean fields, map ownership, and reduce duplicates — so your team starts with usable data, not a messy import.",
   },
   {
-    name: "Expense",
-    role: "Spend visibility and approval control.",
-    group: "Finance" as const,
+    question: "Do you provide training and support?",
+    answer:
+      "Yes. We train users and admins on the workflows you will actually run, and we stay available for support, enhancements, and optimization after go-live.",
   },
   {
-    name: "Projects",
-    role: "Delivery execution after deal closure.",
-    group: "Operations" as const,
-  },
-  {
-    name: "Creator",
-    role: "Process extensions unique to your business.",
-    group: "Operations" as const,
-  },
-  {
-    name: "Analytics",
-    role: "Leadership reporting and live dashboards.",
-    group: "Intelligence" as const,
+    question: "What happens in a free consultation?",
+    answer:
+      "In about 30 minutes we review how leads, handoffs, and reporting work today, identify gaps, and outline the Zoho approach that fits your business — with no obligation.",
   },
 ];
 
 export default function HomePage() {
+  const industries = getPublishedIndustries();
+  const platformRoles: Record<string, string> = {
+    crm: "Lead ownership, pipeline, and sales follow-up.",
+    books: "Invoicing, payments, and collections control.",
+    inventory: "Stock visibility and order fulfillment handoffs.",
+    projects: "Delivery execution after deal closure.",
+    people: "HR processes and team administration.",
+    desk: "Ticket ownership, queues, and SLA control.",
+    analytics: "Leadership dashboards and live KPIs.",
+    creator: "Custom apps for unique business workflows.",
+    campaigns: "CRM-backed nurture and follow-up sequences.",
+  };
+  const zohoApps = getPublishedPlatforms().map((item) => ({
+    name: item.name,
+    role: platformRoles[item.slug] ?? item.hero.description,
+  }));
+
   return (
     <>
-      {/* 1. Hero */}
+      <FaqJsonLd items={faqs} />
       <Hero
         variant="authority"
-        eyebrow="Zoho Implementation Partner"
-        title="Business Systems. Not Just Software."
-        description="Structured systems for sales, operations, and finance — owned, connected, and visible on Zoho."
+        eyebrow="Zoho Authorized Partner · India & GCC"
+        title="Zoho Partner for Retail & Distribution Teams"
+        description="We help mid-sized retail and distribution businesses implement Zoho CRM and connected apps — so sales, stock, and finance run as one system."
         primaryCta={CTAS.primary}
         secondaryCta={CTAS.viewDemo}
-        aside={<SystemFlow showSectionChrome={false} size="lg" />}
+        aside={<SystemFlow showSectionChrome={false} size="lg" autoFlow={false} />}
       />
 
-      {/* 2. Trust */}
+      <PartnerTrust tone="muted" spacing="compact" />
+
+      <Stats
+        tone="default"
+        spacing="compact"
+        items={homepageStats}
+        title="What we stand on"
+        description="Partner credentials and market focus — not invented volume metrics."
+      />
+
       <Trust
+        tone="muted"
+        spacing="compact"
+        title="Teams we design systems for"
+        description="Illustrative client marks for layout — swap in approved logos when cleared."
+        showTestimonial={false}
+      />
+
+      <ServicesGrid tone="default" spacing="default" items={services} />
+
+      <WhyZoho tone="muted" spacing="default" />
+
+      <ModuleGrid
         tone="default"
         spacing="default"
-        title="Trusted by growing companies"
-        description="Mid-market teams across India and the GCC running sales, operations, and finance on Zoho."
-        showTestimonial
+        title="Essential Zoho apps we implement"
+        description="The core tools we configure most often for mid-sized teams."
+        items={zohoApps}
+        grouped={false}
       />
 
-      {/* 3. Problem */}
-      <ProblemGrid
-        tone="muted"
-        spacing="default"
-        title="No System. No Control."
-        description="Software without process design fails in the handoffs."
-        items={problems}
-      />
-      <CTA
-        variant="band"
-        tone="default"
-        {...journeyCtas.afterProblem}
-      />
-
-      {/* 3–4. System walkthrough ↔ CRM preview */}
-      <ConnectedSystemExperience />
-      <CTA
-        variant="band"
-        tone="muted"
-        {...journeyCtas.afterSystem}
-      />
-
-      {/* 5. Solutions */}
-      <Grid
-        id="solutions"
-        tone="muted"
-        spacing="default"
-        title="Solutions"
-        description="Operating systems by function."
-        columns={3}
-      >
-        {solutions.map((item) => (
-          <DirectoryCard
-            key={item.href}
-            href={item.href}
-            title={item.label}
-            description={item.description}
-            icon={<DirectoryIcon name={item.icon ?? item.label} />}
-          />
-        ))}
-      </Grid>
-      <CTA
-        variant="band"
-        tone="default"
-        {...journeyCtas.afterSolutions}
-      />
-
-      {/* 6. Industries */}
       <Grid
         id="industries"
         tone="muted"
         spacing="default"
-        title="Industries"
-        description="Enter by sector — see the operating system built for how you run."
-        columns={3}
+        eyebrow="Industries"
+        title="Zoho solutions by industry"
+        description="Published industry models — start with how your sector runs."
+        columns={4}
       >
         {industries.map((item) => (
           <DirectoryCard
-            key={item.href}
-            href={item.href}
-            title={item.label}
-            description={item.description}
-            icon={<DirectoryIcon name={item.icon} />}
-            ctaLabel="View System"
-            tall
+            key={item.slug}
+            href={`/industries/${item.slug}`}
+            title={item.name}
+            description={item.hero.description}
+            icon={<DirectoryIcon name={item.slug} />}
+            ctaLabel="View industry"
           />
         ))}
       </Grid>
-      <CTA
-        variant="band"
-        tone="default"
-        {...journeyCtas.afterIndustries}
-      />
 
-      {/* 7. Platform */}
-      <ModuleGrid
-        tone="default"
-        spacing="default"
-        title="Zoho Platform"
-        description="One structured ecosystem — Sales, Finance, Operations, and Intelligence."
-        items={platform}
-        grouped
-      />
-      <CTA
-        variant="band"
-        tone="muted"
-        {...journeyCtas.afterPlatform}
-      />
+      <WhyChoose tone="default" spacing="default" />
 
-      {/* 8. Closing CTA */}
+      <ConnectedSystemExperience />
+
+      <Testimonials tone="muted" spacing="default" />
+
+      <CaseStudyTeaser tone="default" spacing="default" />
+
+      <InsightsTeaser tone="muted" spacing="default" limit={3} />
+
+      <Faq tone="default" spacing="default" items={faqs} />
+
       <CTA
         tone="dark"
         spacing="default"
-        title="Audit Your Systems"
-        description="Map intake, handoffs, and reporting. Define the Zoho build."
+        title="Book a free Zoho consultation"
+        description="Tell us how your retail, distribution, or mid-market team runs today. We’ll map the right Zoho approach — implementation, training, and support included in the plan."
         cta={CTAS.primary}
-        secondaryCta={CTAS.viewDemo}
-        tertiaryCta={CTAS.exploreSolutions}
+        secondaryCta={CTAS.whatsapp}
+        tertiaryCta={CTAS.industryUseCase}
       />
     </>
   );

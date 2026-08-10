@@ -33,8 +33,10 @@ export function DirectoryCard({
         className,
       )}
     >
-      <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-primary transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:bg-primary group-hover:text-white group-hover:shadow-sm">
-        {icon}
+      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition duration-200 group-hover:scale-105">
+        <span className="[&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-white [&_svg]:stroke-[1.75]">
+          {icon}
+        </span>
       </span>
 
       <h3 className="mt-5 text-lg font-semibold tracking-tight text-gray-900 transition-colors duration-300 ease-in-out group-hover:text-primary">
@@ -42,7 +44,7 @@ export function DirectoryCard({
       </h3>
 
       {description ? (
-        <p className="mt-2 line-clamp-1 text-sm leading-snug text-gray-600">
+        <p className="mt-2 line-clamp-3 text-sm leading-snug text-gray-600">
           {description}
         </p>
       ) : null}

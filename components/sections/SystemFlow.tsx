@@ -296,7 +296,7 @@ function FlowNode({
     <article
       className={cn(
         "group/node flex w-full flex-col items-center text-center",
-        large ? "min-w-0" : "min-w-[104px] md:min-w-[112px]",
+        large ? "min-w-0" : "min-w-0 sm:min-w-[96px]",
       )}
     >
       <p
@@ -313,17 +313,15 @@ function FlowNode({
 
       <div
         className={cn(
-          "flow-node-card mt-3 flex items-center justify-center rounded-2xl border bg-white text-primary",
-          "transition-all duration-300 ease-in-out",
-          "hover:scale-105 hover:border-blue-600/50 hover:shadow-lg",
-          "group-hover/node:scale-105 group-hover/node:shadow-lg",
-          "group-hover/flow:border-blue-500/40 group-hover/flow:shadow-md group-hover/flow:ring-2 group-hover/flow:ring-blue-500/10",
+          "flow-node-card mt-3 flex items-center justify-center rounded-xl border bg-white text-primary",
+          "transition duration-200 ease-in-out",
+          "hover:border-primary/40",
           large ? "h-[4.5rem] w-[4.5rem]" : "h-14 w-14",
           highlighted || autoActive
-            ? "scale-105 border-blue-700 shadow-lg ring-2 ring-blue-600/20 animate-flow-node"
+            ? "border-primary shadow-sm"
             : pathActive
-              ? "border-blue-500/50 shadow-md"
-              : "border-gray-200 shadow-sm",
+              ? "border-primary/40"
+              : "border-gray-200",
         )}
       >
         <FlowIcon type={node.icon} size={size} />
@@ -512,10 +510,10 @@ export function SystemFlow({
   const flow = (
     <div
       className={cn(
-        "w-full rounded-2xl border border-gray-200 bg-gray-50 shadow-sm",
+        "w-full overflow-hidden rounded-2xl border border-gray-200 bg-white",
         large
-          ? "border-gray-200/90 bg-white px-6 py-10 shadow-none md:px-8 md:py-12 lg:min-h-[460px] lg:px-10 lg:py-14"
-          : "px-5 py-8 md:px-8 md:py-10",
+          ? "px-4 py-6 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.4)] sm:px-6 sm:py-8 md:px-8 md:py-9"
+          : "px-5 py-8 shadow-md md:px-8 md:py-10",
         !showSectionChrome && className,
       )}
     >

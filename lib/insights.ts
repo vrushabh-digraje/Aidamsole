@@ -7,6 +7,7 @@ export type Insight = {
   problem: string;
   analysis: string;
   conclusion: string;
+  published?: boolean;
 };
 
 export const insights: Insight[] = [
@@ -99,6 +100,66 @@ export const insights: Insight[] = [
       "Shadow processes persist when the official system is slower than the workaround or fails to answer the team’s real question. Removing WhatsApp by policy rarely works. The consulting move is to make the system of record faster for the critical path: capture, owner, next action, status. Excel can remain for analysis temporarily; it should not remain the place where ownership lives. Design Zoho around the moments people currently open WhatsApp — lead assignment, visit confirmation, delivery update — and the shadow process shrinks because it is no longer necessary.",
     conclusion:
       "Do not fight shadow tools with slogans. Replace their job with a clearer, faster process in Zoho. When the system of record is useful under pressure, Excel and chat fall back to communication — not control.",
+  },
+  {
+    slug: "how-ops-heads-evaluate-zoho-partner",
+    category: "Buying decisions",
+    title: "How Ops Heads should evaluate a Zoho partner",
+    description:
+      "Licenses and demos are easy to buy. Operating control is not. Use a short diligence checklist before you commit.",
+    intro:
+      "Most partner pitches look the same: modules, screenshots, and a go-live date. Ops Heads need a different test — whether the partner can redesign how work moves, then make Zoho enforce it.",
+    problem:
+      "Buyers compare price and timeline, then discover after go-live that nobody owns stage exits, handoffs, or weekly review definitions. The partner delivered configuration. The business still runs on WhatsApp. Replacing the vendor later costs more than choosing carefully once.",
+    analysis:
+      "Evaluate partners on process evidence, not feature lists. Ask them to walk one of your real journeys — enquiry to close, or close to delivery — and name owners, entry criteria, and the metrics leadership will trust. Ask who trains managers, not only end users. Ask what “done” means after go-live: adoption reviews, report trust, and shadow-process shutdown. A strong partner will refuse to start in the admin panel. They will push for a System Audit, write operating rules in business language, and keep scope subtractive. If the proposal is only hours of configuration with no process design, you are buying setup labor.",
+    conclusion:
+      "Choose the partner who can run a weekly operating review from the system they design. Configuration skill is necessary; operating design is the differentiator.",
+  },
+  {
+    slug: "zoho-for-retail-distribution-visibility",
+    category: "Zoho use cases",
+    title: "Zoho for retail and distribution order visibility",
+    description:
+      "Dealer enquiries, stock checks, and dispatch status need one path — or sales and warehouse will keep disagreeing.",
+    intro:
+      "Retail and distribution teams feel busy because volume is high. The real pain is invisibility after the quote: confirmed orders, stock reality, and dispatch aging live in different places.",
+    problem:
+      "Sales promises availability warehouse cannot see. Dealers chase status on WhatsApp. Managers rebuild OTIF from Excel every week. CRM may hold the customer, but fulfillment truth sits elsewhere — so leadership cannot trust either system.",
+    analysis:
+      "A workable Zoho design for retail and distribution starts with stages after confirmation: reserved, picking, dispatched, delivered. Stock checks belong in the path before promises leave the building. CRM keeps commercial context; Inventory and Books own stock and invoice truth; Analytics shows aging without a rebuild. Automations should flag blocked orders early, not create more noise. The consulting question is simple: can sales and ops answer “where is this order?” from one screen without calling each other?",
+    conclusion:
+      "For retail and distribution, Zoho success is shared order visibility under volume. Design fulfillment stages and stock rules before adding more apps.",
+  },
+  {
+    slug: "admissions-funnel-counsellor-ownership",
+    category: "Zoho use cases",
+    title: "Admissions funnels need counsellor ownership first",
+    description:
+      "Education CRM projects fail when stages differ by counsellor. Shared definitions turn Zoho into a funnel you can manage.",
+    intro:
+      "Institutes rarely lack enquiries during campaign season. They lack a single definition of stage, owner, and next action across counsellors — so conversion reporting becomes fiction.",
+    problem:
+      "Each counsellor tracks progress differently. Document chase lives in chat. Fee status sits with finance. Leadership asks for funnel conversion and receives three spreadsheets that cannot be reconciled. Zoho gets blamed for “not fitting education.”",
+    analysis:
+      "Start with admissions language, not modules: enquiry, counselling, application, documents, fee, enrolled. Assign one counsellor owner immediately. Make document and fee blockers visible on the same record. Campaigns can nurture stalled applications, but only after ownership rules exist. Analytics should show stage conversion by counsellor using those frozen definitions. Overbuilding custom forms before stage discipline usually locks in confusion. The useful Monday test: can the admissions head see overdue document follow-ups and unowned enquiries in one view?",
+    conclusion:
+      "Education Zoho wins when counsellor ownership and stage exits are enforced. Configure CRM to that funnel — then layer nurture and fee visibility.",
+  },
+  {
+    slug: "ticket-to-account-health",
+    category: "Operational inefficiencies",
+    title: "From tickets to account health",
+    description:
+      "Support queues without commercial context create repeat work. Link Desk to CRM so risk shows before escalation.",
+    intro:
+      "Service businesses often treat support as a separate island. Tickets get answered, but account risk still surprises sales and leadership — because nobody connects queue health to the customer relationship.",
+    problem:
+      "Agents lack deal and delivery history. SLAs exist on paper. Repeat issues reopen as new chats. Account managers learn about pain only when the client escalates or churns. Desk may be “implemented,” yet account health stays invisible.",
+    analysis:
+      "Design support as part of the operating system: every ticket links to an account, priority rules reflect commercial risk, and aging surfaces to managers before contractual breach. Chronic patterns should spawn remediation work — not endless reopen cycles. CRM holds relationship context; Desk owns the queue; Analytics shows breach and repeat themes for weekly review. The goal is earlier intervention, not more ticket fields. If agents restart discovery every time, the handoff between commercial and service was never designed.",
+    conclusion:
+      "Connect tickets to accounts and make aging visible. Support becomes a control system when queue work and relationship risk share one operating view.",
   },
 ];
 

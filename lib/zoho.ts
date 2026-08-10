@@ -74,7 +74,9 @@ function mapLeadFields(input: ZohoLeadInput) {
   };
 }
 
-export async function createZohoLead(input: ZohoLeadInput): Promise<{ id?: string }> {
+async function postZohoLead(
+  data: Record<string, unknown>,
+): Promise<{ id?: string }> {
   const config = getZohoConfig();
   const accessToken = await getAccessToken(config);
 
@@ -85,7 +87,7 @@ export async function createZohoLead(input: ZohoLeadInput): Promise<{ id?: strin
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      data: [mapLeadFields(input)],
+      data: [data],
     }),
   });
 
@@ -105,4 +107,30 @@ export async function createZohoLead(input: ZohoLeadInput): Promise<{ id?: strin
   }
 
   return { id: record?.details?.id };
+}
+
+export async function createZohoLead(input: ZohoLeadInput): Promise<{ id?: string }> {
+  return postZohoLead(mapLeadFields(input));
+}
+
+export type ZohoContactLeadInput = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+};
+
+export async function createContactZohoLead(
+  input: ZohoContactLeadInput,
+): Promise<{ id?: string }> {
+  return postZohoLead({
+    First_Name: input.firstName,
+    Last_Name: input.lastName,
+    Email: input.email,
+    Phone: input.phone,
+    Lead_Source: "Website Contact",
+    Description: `Service: ${input.service}\n\n${input.message}`,
+  });
 }

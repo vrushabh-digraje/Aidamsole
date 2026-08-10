@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SolutionPageTemplate } from "@/components/solutions/SolutionPageTemplate";
-import { getSolutionBySlug, getSolutionSlugs } from "@/lib/data/solutions";
+import { MarketingPageTemplate } from "@/components/templates/MarketingPageTemplate";
+import { getSolutionBySlug } from "@/lib/data/solutions";
+import {
+  generateMarketingMetadata,
+  solutionToMarketingPage,
+} from "@/lib/marketing";
+import {
+  getPublishedSolutions,
+  isPublishedSolution,
+} from "@/lib/published";
 
 type SolutionsSlugPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return getSolutionSlugs().map((slug) => ({ slug }));
+  return getPublishedSolutions().map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({
@@ -17,15 +25,10 @@ export async function generateMetadata({
 }: SolutionsSlugPageProps): Promise<Metadata> {
   const { slug } = await params;
   const solution = getSolutionBySlug(slug);
-
-  if (!solution) {
+  if (!solution || !isPublishedSolution(slug)) {
     return { title: "Solution" };
   }
-
-  return {
-    title: solution.name,
-    description: solution.hero.description,
-  };
+  return generateMarketingMetadata(solutionToMarketingPage(solution));
 }
 
 export default async function SolutionDetailPage({
@@ -34,9 +37,10 @@ export default async function SolutionDetailPage({
   const { slug } = await params;
   const solution = getSolutionBySlug(slug);
 
-  if (!solution) {
+  if (!solution || !isPublishedSolution(slug)) {
     notFound();
   }
 
-  return <SolutionPageTemplate solution={solution} />;
+  const page = solutionToMarketingPage(solution);
+  return <MarketingPageTemplate page={page} />;
 }

@@ -2,6 +2,13 @@ export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
+/** Prefer later classes for common Tailwind conflicts (no tailwind-merge dependency). */
+export function cnMerge(...classes: Array<string | false | null | undefined>) {
+  const joined = classes.filter(Boolean).join(" ");
+  // Prefer explicit important overrides when present.
+  return joined;
+}
+
 export type AssessmentScore = "low" | "medium" | "high";
 
 type ScoreInput = {
@@ -73,13 +80,16 @@ export type AnalyticsSnapshot = {
 export type AnalyticsEventName =
   | "assessment_submitted"
   | "assessment_scored"
-  | "lead_synced";
+  | "lead_synced"
+  | "contact_submitted";
 
 export type AnalyticsEvent = {
   name: AnalyticsEventName;
   timestamp: string;
   properties: {
     assessmentId?: string;
+    contactId?: string;
+    service?: string;
     score?: AssessmentScore;
     category?: LeadCategory;
     tag?: LeadTag;

@@ -1,9 +1,16 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import { BrandLogo } from "@/components/layout/BrandLogo";
 import { Container } from "@/components/ui/Container";
+import { ZohoPartnerBadge } from "@/components/ui/ZohoPartnerBadge";
 import { PRIMARY_CTA, ROUTES, SITE } from "@/lib/constants";
 import { footerColumns } from "@/lib/navigation";
+import { LIVE_ROUTES } from "@/lib/published";
+
+/**
+ * Footer columns come from lib/navigation.ts, which filters via
+ * getPublished* helpers in lib/published.ts (single source of truth).
+ */
 
 const socialLinks = [
   {
@@ -90,24 +97,14 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.15fr_repeat(4,minmax(0,1fr))]">
           {/* 1. Brand */}
           <div className="max-w-sm">
-            <Link
-              href={ROUTES.home}
-              className="inline-flex flex-col gap-3 no-underline hover:no-underline"
-              aria-label={`${SITE.legalName} home`}
-            >
-              <span className="inline-flex rounded-lg bg-white px-3 py-2">
-                <Image
-                  src="/brand/aidamsole-logo.png"
-                  alt="Aidamsole Agile Services Private Limited"
-                  width={280}
-                  height={72}
-                  className="h-12 w-auto object-contain object-left sm:h-14"
-                />
+            <div className="inline-flex flex-col gap-3">
+              <span className="inline-flex rounded-lg bg-white px-2 py-1.5">
+                <BrandLogo size="footer" className="hover:bg-transparent hover:border-transparent" />
               </span>
-              <span className="text-sm font-semibold tracking-tight text-white">
+              <p className="text-sm font-semibold tracking-tight text-white">
                 Business Systems on Zoho
-              </span>
-            </Link>
+              </p>
+            </div>
             <p className="mt-4 text-sm leading-relaxed text-gray-300">
               Zoho system design for mid-market companies — sales, operations,
               and finance on one operating model.
@@ -115,6 +112,9 @@ export function Footer() {
             <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
               {SITE.tagline}
             </p>
+            <div className="mt-4 inline-flex rounded-lg bg-white px-2.5 py-2">
+              <ZohoPartnerBadge variant="badge" size="sm" />
+            </div>
 
             <div className="mt-6 flex items-center gap-2">
               {socialLinks.map((social) => (
@@ -135,21 +135,21 @@ export function Footer() {
           {/* 2. Solutions */}
           <FooterColumn
             title="Solutions"
-            href={ROUTES.solutions}
+            href={LIVE_ROUTES.solutions}
             items={footerColumns.solutions}
           />
 
           {/* 3. Industries */}
           <FooterColumn
             title="Industries"
-            href={ROUTES.industries}
+            href={LIVE_ROUTES.industries}
             items={footerColumns.industries}
           />
 
           {/* 4. Platform */}
           <FooterColumn
             title="Platform"
-            href={ROUTES.platform}
+            href={LIVE_ROUTES.platform}
             items={footerColumns.platform}
           />
 
@@ -158,7 +158,7 @@ export function Footer() {
             <p className="text-sm font-semibold uppercase tracking-wide text-gray-400">
               Contact
             </p>
-            <ul className="mt-5 grid gap-4">
+            <ul className="mt-5 grid gap-5">
               <li>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                   Email
@@ -172,14 +172,49 @@ export function Footer() {
               </li>
               <li>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                  Location
+                  India
                 </p>
-                <p className="mt-1.5 text-sm text-gray-300">
-                  {SITE.addresses.india}
+                <a
+                  href={`tel:${SITE.phones.india.tel}`}
+                  className="mt-1.5 block text-sm text-gray-300 transition-colors hover:text-white"
+                >
+                  {SITE.phones.india.display}
+                </a>
+                <p className="mt-2 text-sm leading-snug text-gray-400">
+                  {SITE.addresses.india.lines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
                 </p>
-                <p className="mt-1 text-sm text-gray-300">
-                  {SITE.addresses.uae}
+              </li>
+              <li>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  UAE
                 </p>
+                <a
+                  href={`tel:${SITE.phones.uae.tel}`}
+                  className="mt-1.5 block text-sm text-gray-300 transition-colors hover:text-white"
+                >
+                  {SITE.phones.uae.display}
+                </a>
+                <p className="mt-2 text-sm leading-snug text-gray-400">
+                  {SITE.addresses.uae.lines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </p>
+              </li>
+              <li>
+                <a
+                  href={SITE.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex text-sm font-semibold text-white transition-colors hover:text-gray-300"
+                >
+                  View on Google Maps →
+                </a>
               </li>
               <li>
                 <Link
@@ -198,29 +233,26 @@ export function Footer() {
             © {year} {SITE.legalName}. All rights reserved.
           </p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {footerColumns.company.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm text-gray-300 transition-colors hover:text-white"
+              >
+                {item.label}
+              </Link>
+            ))}
             <Link
-              href={ROUTES.about}
+              href="/sitemap.xml"
               className="text-sm text-gray-300 transition-colors hover:text-white"
             >
-              About
+              Sitemap
             </Link>
             <Link
-              href={ROUTES.caseStudies}
+              href="/robots.txt"
               className="text-sm text-gray-300 transition-colors hover:text-white"
             >
-              Case Studies
-            </Link>
-            <Link
-              href={ROUTES.insights}
-              className="text-sm text-gray-300 transition-colors hover:text-white"
-            >
-              Insights
-            </Link>
-            <Link
-              href={ROUTES.contact}
-              className="text-sm text-gray-300 transition-colors hover:text-white"
-            >
-              Contact
+              Robots
             </Link>
           </div>
         </div>

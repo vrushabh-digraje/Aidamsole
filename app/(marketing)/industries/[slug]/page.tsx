@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { IndustryPageTemplate } from "@/components/industries/IndustryPageTemplate";
+import { MarketingPageTemplate } from "@/components/templates/MarketingPageTemplate";
+import { getIndustryBySlug } from "@/lib/data/industries";
 import {
-  getIndustryBySlug,
-  getIndustrySlugs,
-} from "@/lib/data/industries";
+  generateMarketingMetadata,
+  industryToMarketingPage,
+} from "@/lib/marketing";
+import {
+  getPublishedIndustries,
+  isPublishedIndustry,
+} from "@/lib/published";
 
 type IndustrySlugPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return getIndustrySlugs().map((slug) => ({ slug }));
+  return getPublishedIndustries().map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({
@@ -20,15 +25,10 @@ export async function generateMetadata({
 }: IndustrySlugPageProps): Promise<Metadata> {
   const { slug } = await params;
   const industry = getIndustryBySlug(slug);
-
-  if (!industry) {
+  if (!industry || !isPublishedIndustry(slug)) {
     return { title: "Industry" };
   }
-
-  return {
-    title: `${industry.name} Systems`,
-    description: industry.hero.description,
-  };
+  return generateMarketingMetadata(industryToMarketingPage(industry));
 }
 
 export default async function IndustryDetailPage({
@@ -37,9 +37,10 @@ export default async function IndustryDetailPage({
   const { slug } = await params;
   const industry = getIndustryBySlug(slug);
 
-  if (!industry) {
+  if (!industry || !isPublishedIndustry(slug)) {
     notFound();
   }
 
-  return <IndustryPageTemplate industry={industry} />;
+  const page = industryToMarketingPage(industry);
+  return <MarketingPageTemplate page={page} />;
 }

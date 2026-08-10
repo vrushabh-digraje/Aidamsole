@@ -37,7 +37,7 @@ function PanelShell({
       role="region"
       aria-labelledby={labelledBy}
       className={cn(
-        "pointer-events-none invisible absolute left-1/2 top-full z-50 w-screen max-w-4xl -translate-x-1/2 pt-2 opacity-0",
+        "pointer-events-none invisible absolute left-1/2 top-full z-40 w-[min(100vw-2rem,48rem)] -translate-x-1/2 pt-2 opacity-0",
         "transition-[opacity,visibility] duration-150 ease-out delay-200",
         "group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:delay-150",
         "group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:delay-150",
@@ -179,11 +179,11 @@ function MegaMenuItem({ panel }: { panel: MegaMenuPanel }) {
   const hasPanel = panel.type !== "link" && Boolean(panel.items?.length);
 
   return (
-    <div className="group relative flex h-14 items-center">
+    <div className="group relative flex h-11 items-center">
       <Link
         id={triggerId}
         href={panel.href}
-        className="inline-flex h-full items-center border-b-2 border-transparent px-1 text-[13px] font-medium text-gray-600 no-underline transition duration-300 ease-in-out hover:text-gray-900 hover:no-underline group-hover:border-primary group-hover:text-gray-900 group-focus-within:border-primary group-focus-within:text-gray-900"
+        className="inline-flex h-full items-center rounded-md border-b-2 border-transparent px-2 text-[13px] font-medium text-gray-600 no-underline transition duration-200 ease-out hover:bg-gray-50 hover:text-gray-900 hover:no-underline group-hover:border-primary group-hover:text-gray-900 group-focus-within:border-primary group-focus-within:text-gray-900"
       >
         {panel.label}
       </Link>
@@ -230,7 +230,7 @@ export function MegaMenu({ items = megaMenu, className }: MegaMenuProps) {
     <nav
       aria-label="Primary"
       className={cn(
-        "hidden items-center justify-center gap-8 xl:flex",
+        "hidden items-center justify-end gap-0.5 xl:flex",
         className,
       )}
     >

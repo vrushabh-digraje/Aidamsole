@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { OrganizationJsonLd } from "@/components/seo/OrganizationJsonLd";
 import { SITE } from "@/lib/constants";
+import { SITE_URL, STATIC_PAGES } from "@/lib/seo";
 import "@/styles/globals.css";
 
 const inter = Inter({
@@ -11,17 +13,32 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: SITE.name,
+    default: STATIC_PAGES.home.title,
     template: `%s | ${SITE.name}`,
   },
-  description: SITE.description,
+  description: STATIC_PAGES.home.description,
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: SITE_URL,
+    siteName: SITE.name,
+    title: STATIC_PAGES.home.title,
+    description: STATIC_PAGES.home.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: STATIC_PAGES.home.title,
+    description: STATIC_PAGES.home.description,
+  },
   icons: {
     icon: [
+      { url: "/icon", type: "image/png" },
       { url: "/brand/favicon.svg", type: "image/svg+xml" },
       { url: "/brand/aidamsole-logo.png", type: "image/png" },
     ],
-    shortcut: "/brand/favicon.svg",
+    shortcut: "/icon",
     apple: "/brand/apple-touch-icon.png",
   },
 };
@@ -34,6 +51,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={inter.variable}>
       <body className={inter.className}>
+        <OrganizationJsonLd />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:text-gray-900"

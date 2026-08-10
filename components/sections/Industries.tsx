@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Section } from "@/components/layout/Section";
 import { Card } from "@/components/ui/Card";
-import { getAllIndustries } from "@/lib/data/industries";
+import { getPublishedIndustries } from "@/lib/published";
 
 type IndustriesProps = {
   title?: string;
@@ -14,7 +14,7 @@ export function Industries({
   description = "Industry operating models for mid-market companies across India and the UAE.",
 }: IndustriesProps) {
   const headingId = "industries-heading";
-  const industries = getAllIndustries();
+  const industries = getPublishedIndustries();
 
   return (
     <Section id="industries" ariaLabelledby={headingId}>

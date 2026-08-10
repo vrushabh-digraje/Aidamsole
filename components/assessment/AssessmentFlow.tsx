@@ -92,6 +92,8 @@ export function AssessmentFlow() {
               className={fieldClassName}
             >
               <option value="">Select industry</option>
+              <option value="retail-distribution">Retail & Distribution</option>
+              <option value="manufacturing">Manufacturing</option>
               <option value="real-estate">Real Estate</option>
               <option value="healthcare">Healthcare</option>
               <option value="education">Education</option>

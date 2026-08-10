@@ -1,4 +1,11 @@
+import {
+  LIVE_ROUTES,
+  getPublishedIndustries,
+  getPublishedPlatforms,
+  getPublishedSolutions,
+} from "@/lib/published";
 import { ROUTES } from "@/lib/constants";
+import { STATIC_PAGES } from "@/lib/seo";
 
 export type NavItem = {
   label: string;
@@ -12,114 +19,98 @@ export type MegaMenuPanel = {
   href: string;
   type: "solutions" | "industries" | "platform" | "link";
   items?: NavItem[];
+  showViewAll?: boolean;
 };
 
-function slugify(label: string) {
-  return label
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+/** Nav items from published.ts registry only. */
+export function publishedSolutionItems(): NavItem[] {
+  return getPublishedSolutions().map((item) => ({
+    label: item.name,
+    href: `${ROUTES.solutions}/${item.slug}`,
+    description: item.seo?.description ?? item.hero.description,
+    icon: item.slug,
+  }));
 }
 
-export const megaMenu: MegaMenuPanel[] = [
-  {
-    label: "Solutions",
-    href: ROUTES.solutions,
-    type: "solutions",
-    items: [
-      {
-        label: "Sales System",
-        href: `${ROUTES.solutions}/sales-system`,
-        description: "Lead ownership, pipeline stages, and follow-up control.",
-        icon: "sales",
-      },
-      {
-        label: "Marketing Automation",
-        href: `${ROUTES.solutions}/marketing-automation`,
-        description: "Lead capture, nurture sequences, and campaign attribution.",
-        icon: "marketing",
-      },
-      {
-        label: "Delivery & Project System",
-        href: `${ROUTES.solutions}/delivery-project-system`,
-        description: "Sale-to-delivery handoffs with named owners and status.",
-        icon: "delivery",
-      },
-      {
-        label: "Finance & Operations",
-        href: `${ROUTES.solutions}/finance-operations`,
-        description: "Quotes, invoices, and collections tied to closed work.",
-        icon: "finance",
-      },
-      {
-        label: "Leadership Dashboard",
-        href: `${ROUTES.solutions}/leadership-dashboard`,
-        description: "Pipeline, delivery, and finance views for weekly reviews.",
-        icon: "dashboard",
-      },
-    ],
-  },
-  {
-    label: "Industries",
-    href: ROUTES.industries,
-    type: "industries",
-    items: [
-      "Real Estate",
-      "Healthcare",
-      "Manufacturing",
-      "Education",
-      "Retail",
-      "IT Services",
-      "Construction",
-      "Interior Design",
-    ].map((label) => ({
-      label,
-      href: `${ROUTES.industries}/${slugify(label)}`,
-      icon: slugify(label),
-    })),
-  },
-  {
-    label: "Platform",
-    href: ROUTES.platform,
-    type: "platform",
-    items: [
-      "CRM",
-      "Books",
-      "Projects",
-      "People",
-      "Desk",
-      "Analytics",
-      "Creator",
-      "Inventory",
-    ].map((label) => ({
-      label,
-      href: `${ROUTES.platform}/${slugify(label)}`,
-      description: `Zoho ${label}`,
-      icon: slugify(label),
-    })),
-  },
-  {
-    label: "Case Studies",
-    href: ROUTES.caseStudies,
-    type: "link",
-  },
-  {
-    label: "Insights",
-    href: ROUTES.insights,
-    type: "link",
-  },
-  {
-    label: "About",
-    href: ROUTES.about,
-    type: "link",
-  },
-  {
-    label: "Contact",
-    href: ROUTES.contact,
-    type: "link",
-  },
-];
+export function publishedIndustryItems(): NavItem[] {
+  return getPublishedIndustries().map((item) => ({
+    label: item.name,
+    href: `${ROUTES.industries}/${item.slug}`,
+    description: item.seo?.description ?? item.hero.description,
+    icon: item.slug,
+  }));
+}
+
+export function publishedPlatformItems(): NavItem[] {
+  return getPublishedPlatforms().map((item) => ({
+    label: item.productName,
+    href: `${ROUTES.platform}/${item.slug}`,
+    description: item.seo?.description ?? item.hero.description,
+    icon: item.slug,
+  }));
+}
+
+/** Primary nav — published routes only (published.ts SSOT). */
+export const megaMenu: MegaMenuPanel[] = (
+  [
+    {
+      label: "Solutions",
+      href: LIVE_ROUTES.solutions,
+      type: "solutions" as const,
+      showViewAll: STATIC_PAGES.solutionsHub.published,
+      items: publishedSolutionItems(),
+    },
+    {
+      label: "Industries",
+      href: LIVE_ROUTES.industries,
+      type: "industries" as const,
+      showViewAll: STATIC_PAGES.industriesHub.published,
+      items: publishedIndustryItems(),
+    },
+    {
+      label: "Platform",
+      href: LIVE_ROUTES.platform,
+      type: "platform" as const,
+      showViewAll: STATIC_PAGES.platformHub.published,
+      items: publishedPlatformItems(),
+    },
+    {
+      label: "Case Studies",
+      href: LIVE_ROUTES.caseStudies,
+      type: "link" as const,
+    },
+    {
+      label: "Insights",
+      href: LIVE_ROUTES.insights,
+      type: "link" as const,
+    },
+    {
+      label: "About",
+      href: LIVE_ROUTES.about,
+      type: "link" as const,
+    },
+    {
+      label: "Approach",
+      href: LIVE_ROUTES.approach,
+      type: "link" as const,
+    },
+    {
+      label: "Contact",
+      href: LIVE_ROUTES.contact,
+      type: "link" as const,
+    },
+  ] satisfies MegaMenuPanel[]
+).filter((panel) => {
+  if (panel.type === "link") {
+    if (panel.href === ROUTES.caseStudies) return STATIC_PAGES.caseStudies.published;
+    if (panel.href === ROUTES.insights) return STATIC_PAGES.insights.published;
+    if (panel.href === ROUTES.about) return STATIC_PAGES.about.published;
+    if (panel.href === ROUTES.approach) return STATIC_PAGES.approach.published;
+    if (panel.href === ROUTES.contact) return STATIC_PAGES.contact.published;
+    return true;
+  }
+  return Boolean(panel.items?.length);
+});
 
 export const mainNav: NavItem[] = megaMenu.map((item) => ({
   label: item.label,
@@ -128,49 +119,32 @@ export const mainNav: NavItem[] = megaMenu.map((item) => ({
 
 export const footerNav: NavItem[] = mainNav;
 
+/** Footer columns — same published registry as mega menu. */
 export const footerColumns = {
-  solutions: megaMenu.find((item) => item.type === "solutions")?.items ?? [],
-  industries: (
-    megaMenu.find((item) => item.type === "industries")?.items ?? []
-  ).slice(0, 6),
-  platform: (megaMenu.find((item) => item.type === "platform")?.items ?? []).slice(
-    0,
-    6,
-  ),
+  solutions: publishedSolutionItems(),
+  industries: publishedIndustryItems(),
+  platform: publishedPlatformItems(),
   company: [
-    { label: "Case Studies", href: ROUTES.caseStudies },
-    { label: "Insights", href: ROUTES.insights },
-    { label: "About", href: ROUTES.about },
-    { label: "Contact", href: ROUTES.contact },
+    ...(STATIC_PAGES.about.published
+      ? [{ label: "About", href: ROUTES.about }]
+      : []),
+    ...(STATIC_PAGES.approach.published
+      ? [{ label: "Approach", href: ROUTES.approach }]
+      : []),
+    ...(STATIC_PAGES.caseStudies.published
+      ? [{ label: "Case Studies", href: ROUTES.caseStudies }]
+      : []),
+    ...(STATIC_PAGES.insights.published
+      ? [{ label: "Insights", href: ROUTES.insights }]
+      : []),
+    ...(STATIC_PAGES.contact.published
+      ? [{ label: "Contact", href: ROUTES.contact }]
+      : []),
+    ...(STATIC_PAGES.privacy.published
+      ? [{ label: "Privacy", href: ROUTES.privacy }]
+      : []),
+    ...(STATIC_PAGES.terms.published
+      ? [{ label: "Terms", href: ROUTES.terms }]
+      : []),
   ],
 } as const;
-
-export const solutionSlugs = [
-  "sales-system",
-  "marketing-automation",
-  "delivery-project-system",
-  "finance-operations",
-  "leadership-dashboard",
-] as const;
-
-export const industrySlugs = [
-  "real-estate",
-  "healthcare",
-  "manufacturing",
-  "education",
-  "retail",
-  "it-services",
-  "construction",
-  "interior-design",
-] as const;
-
-export const platformSlugs = [
-  "crm",
-  "books",
-  "projects",
-  "people",
-  "desk",
-  "analytics",
-  "creator",
-  "inventory",
-] as const;

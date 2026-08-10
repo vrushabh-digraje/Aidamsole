@@ -29,3 +29,5 @@
 ## 06 Development
 
 - [12-dev-plan.md](./12-dev-plan.md)
+- [13-checkpoint-2026-08-10.md](./13-checkpoint-2026-08-10.md) — structure, pages, architecture & QA snapshot
+- [14-marketing-page-system.md](./14-marketing-page-system.md) — unified MarketingPage template (SSOT for page layout)
