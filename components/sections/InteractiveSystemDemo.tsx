@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
 import {
   Section,
   type SectionSpacing,
@@ -91,7 +90,7 @@ export const systemDemoSteps: SystemDemoStep[] = [
   },
 ];
 
-export type SystemStepChangeSource = "user" | "autoplay" | "sync";
+export type SystemStepChangeSource = "user" | "autoplay" | "sync" | "hover";
 
 type InteractiveSystemDemoProps = {
   title?: string;
@@ -247,7 +246,7 @@ function WorkflowConnector({ active }: { active?: boolean }) {
       <span
         className={cn(
           "h-3 w-px transition-colors duration-300 ease-in-out",
-          active ? "bg-primary/50" : "bg-gray-200",
+          active ? "bg-blue-600/50" : "bg-gray-200",
         )}
       />
       <svg
@@ -255,7 +254,7 @@ function WorkflowConnector({ active }: { active?: boolean }) {
         fill="none"
         className={cn(
           "h-3 w-3 rotate-90 transition-colors duration-300 ease-in-out",
-          active ? "text-primary" : "text-gray-300",
+          active ? "text-blue-600" : "text-gray-300",
         )}
       >
         <path
@@ -267,7 +266,7 @@ function WorkflowConnector({ active }: { active?: boolean }) {
       <span
         className={cn(
           "h-3 w-px transition-colors duration-300 ease-in-out",
-          active ? "bg-primary/50" : "bg-gray-200",
+          active ? "bg-blue-600/50" : "bg-gray-200",
         )}
       />
     </div>
@@ -321,13 +320,13 @@ function DemoToolbar({
               "inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-semibold uppercase tracking-wide",
               paused
                 ? "bg-gray-100 text-gray-600"
-                : "bg-primary/10 text-primary",
+                : "bg-blue-50 text-blue-600",
             )}
           >
             <span
               className={cn(
                 "h-1.5 w-1.5 rounded-full",
-                paused ? "bg-gray-400" : "bg-primary animate-pulse",
+                paused ? "bg-gray-400" : "bg-blue-600 animate-pulse",
               )}
             />
             {paused ? "Paused" : "Auto play"}
@@ -337,7 +336,7 @@ function DemoToolbar({
             <button
               type="button"
               onClick={onTogglePause}
-              className="cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm transition-all duration-300 ease-in-out hover:border-primary/40 hover:bg-primary/[0.03]"
+              className="cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm transition-all duration-300 ease-in-out hover:border-blue-600/40 hover:bg-blue-50/10"
               aria-pressed={paused}
               aria-label={paused ? "Resume auto play" : "Pause auto play"}
             >
@@ -358,7 +357,7 @@ function DemoToolbar({
         <div
           key={progressKey}
           className={cn(
-            "h-full w-full rounded-full bg-primary animate-demo-progress",
+            "h-full w-full rounded-full bg-blue-600 animate-demo-progress",
             paused && "[animation-play-state:paused]",
           )}
         />
@@ -372,9 +371,9 @@ function DemoToolbar({
             className={cn(
               "h-1 flex-1 rounded-full transition-colors duration-300 ease-in-out",
               index < activeIndex
-                ? "bg-primary"
+                ? "bg-blue-600"
                 : index === activeIndex
-                  ? "bg-primary/35"
+                  ? "bg-blue-600/35"
                   : "bg-gray-100",
             )}
           />
@@ -389,11 +388,13 @@ function StepRail({
   activeId,
   activeIndex,
   onSelect,
+  onHover,
 }: {
   steps: SystemDemoStep[];
   activeId: string;
   activeIndex: number;
   onSelect: (id: string) => void;
+  onHover: (id: string) => void;
 }) {
   return (
     <ol
@@ -410,6 +411,7 @@ function StepRail({
             <button
               type="button"
               onClick={() => onSelect(step.id)}
+              onMouseEnter={() => onHover(step.id)}
               aria-pressed={isActive}
               className={cn(
                 "group grid w-full cursor-pointer grid-cols-[auto_1fr] items-center gap-3 rounded-xl border border-l-4 px-3 py-3 text-left transition-all duration-300 ease-in-out",
@@ -469,10 +471,12 @@ function MiniWorkflow({
   steps,
   activeId,
   onSelect,
+  onHover,
 }: {
   steps: SystemDemoStep[];
   activeId: string;
   onSelect: (id: string) => void;
+  onHover: (id: string) => void;
 }) {
   const activeIndex = steps.findIndex((step) => step.id === activeId);
 
@@ -494,13 +498,14 @@ function MiniWorkflow({
               <button
                 type="button"
                 onClick={() => onSelect(step.id)}
+                onMouseEnter={() => onHover(step.id)}
                 className={cn(
                   "flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border transition-all duration-300 ease-in-out",
                   isActive
-                    ? "border-primary bg-primary text-white shadow-sm"
+                    ? "border-blue-600 bg-blue-600 text-white shadow-sm"
                     : isPast
-                      ? "border-primary/30 bg-white text-primary hover:border-primary/50"
-                      : "border-gray-200 bg-white text-gray-500 hover:border-primary/40 hover:text-primary",
+                      ? "border-blue-600/30 bg-white text-blue-600 hover:border-blue-600/50"
+                      : "border-gray-200 bg-white text-gray-500 hover:border-blue-600/40 hover:text-blue-600",
                 )}
                 aria-label={step.title}
                 aria-current={isActive ? "step" : undefined}
@@ -512,7 +517,7 @@ function MiniWorkflow({
                   aria-hidden="true"
                   className={cn(
                     "mx-1 flex items-center text-gray-300 transition-colors duration-300 ease-in-out",
-                    index < activeIndex && "text-primary/50",
+                    index < activeIndex && "text-blue-600/50",
                   )}
                 >
                   <span className="h-px w-2.5 bg-current" />
@@ -533,96 +538,207 @@ function MiniWorkflow({
   );
 }
 
+function getWalkthroughVisual(id: string) {
+  const key = id.trim().toLowerCase();
+  switch (key) {
+    case "lead":
+      return (
+        <div className="w-full max-w-[200px] rounded-xl border border-blue-200 bg-white p-4 shadow-sm text-center animate-fade-in">
+          <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Meta Ads Form</span>
+          <div className="mt-3 space-y-2 text-left">
+            <div className="h-5 rounded bg-gray-50 border border-gray-200 text-[9px] text-gray-400 flex items-center pl-2">S. Kumar</div>
+            <div className="h-5 rounded bg-gray-50 border border-gray-200 text-[9px] text-gray-400 flex items-center pl-2">skumar@gmail.com</div>
+            <div className="h-5 rounded bg-blue-600 text-[9px] font-bold text-white flex items-center justify-center shadow-sm">Submit Lead</div>
+          </div>
+        </div>
+      );
+    case "crm":
+      return (
+        <div className="w-full max-w-[220px] rounded-xl border border-blue-200 bg-white p-4 shadow-sm animate-fade-in">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="h-6 w-6 rounded-full bg-blue-100 text-[10px] font-bold text-blue-600 flex items-center justify-center">SK</div>
+            <div>
+              <p className="text-[10px] font-extrabold text-gray-800">S. Kumar</p>
+              <p className="text-[8px] text-gray-400">Owner: Rahul Dev</p>
+            </div>
+          </div>
+          <div className="space-y-1.5 border-t border-gray-50 pt-2 text-[9px]">
+            <div className="flex justify-between"><span className="text-gray-400">Status:</span><span className="font-bold text-blue-600">Assigned</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">Phone:</span><span className="font-bold text-gray-700">+91 98765...</span></div>
+          </div>
+        </div>
+      );
+    case "deal":
+      return (
+        <div className="w-full max-w-[220px] rounded-xl border border-blue-200 bg-white p-4 shadow-sm animate-fade-in">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Deal Pipeline</span>
+            <span className="text-[9px] font-bold text-gray-700">₹8,50,000</span>
+          </div>
+          <p className="text-[10px] font-extrabold text-gray-800">Proposal & Presentation</p>
+          <div className="h-1.5 w-full bg-gray-100 rounded overflow-hidden mt-3">
+            <div className="h-full bg-blue-600 rounded" style={{ width: '65%' }}></div>
+          </div>
+          <p className="text-[8px] text-gray-400 mt-1.5">Confidence Level: 65%</p>
+        </div>
+      );
+    case "project":
+      return (
+        <div className="w-full max-w-[200px] rounded-xl border border-blue-200 bg-white p-4 shadow-sm space-y-2.5 animate-fade-in">
+          <p className="text-[10px] font-extrabold text-gray-800 border-b border-gray-100 pb-1.5">Zoho Projects board</p>
+          <div className="flex items-center gap-2">
+            <span className="h-3.5 w-3.5 rounded border border-blue-500 bg-blue-50 text-blue-600 flex items-center justify-center text-[9px] font-bold">✓</span>
+            <span className="text-[10px] text-gray-600">CRM Handoff Checklist</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-3.5 w-3.5 rounded border border-blue-500 bg-blue-50 text-blue-600 flex items-center justify-center text-[9px] font-bold">✓</span>
+            <span className="text-[10px] text-gray-600">Milestone Stage 1</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-3.5 w-3.5 rounded border border-gray-200 flex items-center justify-center text-[9px] font-bold"></span>
+            <span className="text-[10px] text-gray-400">User Adoption Training</span>
+          </div>
+        </div>
+      );
+    case "invoice":
+      return (
+        <div className="w-full max-w-[220px] rounded-xl border border-blue-200 bg-white p-4 shadow-sm animate-fade-in">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[9px] font-bold text-gray-500">Invoice: #INV-2026-90</span>
+            <span className="text-[8px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">PAID</span>
+          </div>
+          <p className="text-[11px] font-extrabold text-gray-800">Sales & Setup Fees</p>
+          <div className="mt-4 pt-2.5 border-t border-gray-100 flex justify-between items-center text-[10px]">
+            <span className="text-gray-400">Total Amt:</span>
+            <span className="font-extrabold text-gray-900">₹45,000</span>
+          </div>
+        </div>
+      );
+    case "dashboard":
+      return (
+        <div className="w-full max-w-[200px] rounded-xl border border-blue-200 bg-white p-4 shadow-sm text-center animate-fade-in">
+          <p className="text-[10px] font-extrabold text-gray-800 mb-3">Leadership Analytics</p>
+          <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+            <svg viewBox="0 0 36 36" className="w-full h-full text-blue-100">
+              <path className="text-blue-100" strokeWidth="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path className="text-blue-600" strokeDasharray="80, 100" strokeWidth="3" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div className="absolute text-[10px] font-extrabold text-gray-800">+55% ROI</div>
+          </div>
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
 function DetailPanel({
   step,
   activeIndex,
   total,
   steps,
   onSelect,
+  onHover,
 }: {
   step: SystemDemoStep;
   activeIndex: number;
   total: number;
   steps: SystemDemoStep[];
   onSelect: (id: string) => void;
+  onHover: (id: string) => void;
 }) {
+  const visualMockup = getWalkthroughVisual(step.id);
+
   return (
-    <div className="flex flex-col bg-white p-7 md:min-h-[500px] md:p-10 lg:p-12">
+    <div className="flex flex-col bg-white p-6 md:min-h-[520px] md:p-8">
       <div
         key={step.id}
         className="animate-demo-fade flex flex-1 flex-col transition-all duration-300 ease-in-out"
       >
-        {/* Title + icon */}
-        <div className="flex items-start gap-5">
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-blue-700 shadow-sm transition-all duration-300 ease-in-out">
-            <StepIcon id={step.id} className="h-6 w-6" />
-          </span>
-          <div className="min-w-0 pt-0.5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
-              Step {String(activeIndex + 1).padStart(2, "0")} /{" "}
-              {String(total).padStart(2, "0")}
-            </p>
-            <h3 className="mt-2 text-2xl font-bold tracking-tight text-gray-900">
-              {step.title}
-            </h3>
-          </div>
-        </div>
+        <div className="grid lg:grid-cols-12 gap-6 items-center flex-1">
+          {/* Left details side (Takes 7/12 columns) */}
+          <div className="lg:col-span-7 flex flex-col justify-between h-full">
+            <div>
+              {/* Title + icon */}
+              <div className="flex items-start gap-4">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-blue-700 shadow-sm transition-all duration-300 ease-in-out">
+                  <StepIcon id={step.id} className="h-5 w-5" />
+                </span>
+                <div className="min-w-0 pt-0.5">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-blue-700">
+                    Step {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                    {String(total).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-1 text-xl font-extrabold tracking-tight text-gray-900">
+                    {step.title}
+                  </h3>
+                </div>
+              </div>
 
-        {/* Description */}
-        <p className="mt-7 max-w-xl text-base leading-relaxed text-gray-600">
-          {step.description}
-        </p>
-
-        {/* Tools */}
-        <div className="mt-8">
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-            Tools used
-          </p>
-          <ul className="mt-4 flex flex-wrap gap-2.5">
-            {step.tools.map((tool) => (
-              <li key={tool}>
-                <Badge className="border-gray-200 bg-gray-50 text-gray-900">
-                  {tool}
-                </Badge>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Outcomes — primary business impact */}
-        {step.outcomes.length > 0 ? (
-          <div className="mt-9 rounded-xl border border-blue-100 bg-blue-50/40 p-6 md:p-7">
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
-                Business outcome
+              {/* Description */}
+              <p className="mt-5 text-sm leading-relaxed text-gray-500">
+                {step.description}
               </p>
-              <span className="text-[11px] font-medium text-gray-500">
-                Why this step matters
-              </span>
-            </div>
-            <ul className="mt-5 grid gap-3">
-              {step.outcomes.map((outcome, index) => (
-                <li
-                  key={outcome}
-                  className="flex items-start gap-3.5 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
-                    <OutcomeIcon index={index} />
-                  </span>
-                  <span className="pt-1.5">{outcome}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
 
-        {/* Mini flow */}
-        <div className="mt-10">
-          <MiniWorkflow
-            steps={steps}
-            activeId={step.id}
-            onSelect={onSelect}
-          />
+              {/* Tools */}
+              <div className="mt-6">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                  Tools used
+                </p>
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {step.tools.map((tool) => (
+                    <li key={tool}>
+                      <Badge className="border-gray-200 bg-gray-50 text-gray-800 text-[10px] font-semibold">
+                        {tool}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Outcomes — primary business impact */}
+              {step.outcomes.length > 0 ? (
+                <div className="mt-6 rounded-2xl border border-blue-100 bg-blue-50/20 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-blue-700">
+                      Business outcome
+                    </p>
+                    <span className="text-[10px] font-medium text-gray-400">
+                      Why this matters
+                    </span>
+                  </div>
+                  <ul className="mt-4 grid gap-2.5">
+                    {step.outcomes.map((outcome, index) => (
+                      <li
+                        key={outcome}
+                        className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-800 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-md"
+                      >
+                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                          <OutcomeIcon index={index} />
+                        </span>
+                        <span className="pt-1.5">{outcome}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Mini flow */}
+            <div className="mt-8 pt-4 border-t border-gray-100">
+              <MiniWorkflow
+                steps={steps}
+                activeId={step.id}
+                onSelect={onSelect}
+                onHover={onHover}
+              />
+            </div>
+          </div>
+          
+          {/* Right visual mockup side (Takes 5/12 columns) */}
+          <div className="lg:col-span-5 flex items-center justify-center border-t border-gray-100 pt-6 lg:border-t-0 lg:pt-0 lg:border-l lg:border-gray-100 lg:pl-6 h-full min-h-[220px]">
+            {visualMockup}
+          </div>
         </div>
       </div>
     </div>
@@ -698,6 +814,11 @@ export function InteractiveSystemDemo({
     setCycleKey((key) => key + 1);
   }
 
+  function hoverStep(id: string) {
+    commitStep(id, "hover");
+    setCycleKey((key) => key + 1);
+  }
+
   const demo = (
     <div
       className={cn(
@@ -726,6 +847,7 @@ export function InteractiveSystemDemo({
             activeId={activeStep?.id ?? steps[0].id}
             activeIndex={activeIndex}
             onSelect={selectStep}
+            onHover={hoverStep}
           />
         </div>
 
@@ -735,6 +857,7 @@ export function InteractiveSystemDemo({
           total={steps.length}
           steps={steps}
           onSelect={selectStep}
+          onHover={hoverStep}
         />
       </div>
     </div>
@@ -752,9 +875,16 @@ export function InteractiveSystemDemo({
       spacing={spacing}
       className={className}
     >
-      <div className="section-copy">
-        <h2 id={headingId}>{title}</h2>
-        <p className="section-lede body-clamp">{description}</p>
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="text-xs font-bold uppercase tracking-widest text-blue-600">
+          Walkthrough
+        </p>
+        <h2 id={headingId} className="mt-2 text-2xl font-extrabold text-gray-900 sm:text-3xl">
+          {title}
+        </h2>
+        <p className="mt-3 text-sm md:text-base leading-snug text-gray-500 max-w-md mx-auto">
+          {description}
+        </p>
       </div>
       <div className="mt-10">{demo}</div>
     </Section>

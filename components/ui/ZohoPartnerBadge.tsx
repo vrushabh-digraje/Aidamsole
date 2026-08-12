@@ -6,8 +6,8 @@ const ASSETS = {
   /** Official blue “Zoho Authorized Partner” badge */
   badge: {
     src: "/brand/zoho-authorized-partner.png",
-    width: 217,
-    height: 118,
+    width: 1024,
+    height: 285,
   },
   /** Icon + wordmark lockup (light background) */
   lockup: {

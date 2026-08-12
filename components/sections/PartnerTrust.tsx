@@ -5,30 +5,32 @@ import {
 } from "@/components/layout/Section";
 import { ZohoPartnerBadge } from "@/components/ui/ZohoPartnerBadge";
 import { SectionIcons } from "@/components/ui/SectionIcons";
+import { cn } from "@/lib/utils";
 
 type PartnerTrustProps = {
   tone?: SectionTone;
   spacing?: SectionSpacing;
+  className?: string;
 };
 
 const stats = [
   {
-    label: "Partner status",
+    label: "PARTNER STATUS",
     value: "Zoho Authorized",
     icon: "check" as const,
   },
   {
-    label: "Regions",
+    label: "REGIONS",
     value: "India & GCC",
     icon: "building" as const,
   },
   {
-    label: "Focus",
+    label: "FOCUS",
     value: "Retail & Distribution",
     icon: "connected" as const,
   },
   {
-    label: "Clients",
+    label: "CLIENTS",
     value: "Mid-sized teams",
     icon: "people" as const,
   },
@@ -37,6 +39,7 @@ const stats = [
 export function PartnerTrust({
   tone = "muted",
   spacing = "compact",
+  className,
 }: PartnerTrustProps) {
   const headingId = "partner-trust-heading";
 
@@ -46,40 +49,48 @@ export function PartnerTrust({
       ariaLabelledby={headingId}
       tone={tone}
       spacing={spacing}
+      className={cn("border-b border-gray-100 bg-slate-50/30", className)}
     >
       <h2 id={headingId} className="sr-only">
         Partner credentials
       </h2>
 
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
-        <div className="flex max-w-md flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <ZohoPartnerBadge variant="badge" size="lg" framed />
-          <div>
-            <p className="text-lg font-semibold tracking-tight text-gray-900">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+        
+        {/* Left Side: Logo and copy description */}
+        <div className="flex flex-1 max-w-xl items-center gap-4 sm:flex-row">
+          <div className="flex-shrink-0">
+            <ZohoPartnerBadge variant="badge" size="md" framed />
+          </div>
+          <div className="min-w-0">
+            <p className="text-base font-bold text-gray-900 tracking-tight sm:text-lg">
               Official Zoho Authorized Partner
             </p>
-            <p className="mt-1 text-sm leading-snug text-gray-600">
+            <p className="mt-1 text-xs md:text-sm leading-snug text-gray-500 max-w-sm">
               Zoho systems for retail and distribution teams across India &amp;
               the GCC — implementation, training, and support.
             </p>
           </div>
         </div>
 
-        <ul className="grid w-full gap-3 sm:grid-cols-2 lg:max-w-2xl lg:grid-cols-4">
+        {/* Right Side: Credential Cards Row */}
+        <ul className="grid w-full gap-3 grid-cols-2 lg:max-w-[55%] lg:grid-cols-4">
           {stats.map((item) => {
             const Icon = SectionIcons[item.icon];
             return (
               <li
                 key={item.label}
-                className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                className="flex flex-col justify-between rounded-xl border border-gray-200/80 bg-white p-3.5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-blue-200/60"
               >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-muted text-primary">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <p className="mt-3 text-[11px] font-semibold uppercase tracking-wide text-gray-500">
-                  {item.label}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-gray-900">
+                <div>
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600 transition-colors duration-300">
+                    <Icon className="h-4.5 w-4.5" />
+                  </span>
+                  <p className="mt-3.5 text-[9.5px] font-bold tracking-wider text-gray-400">
+                    {item.label}
+                  </p>
+                </div>
+                <p className="mt-1 text-xs md:text-sm font-extrabold text-gray-900 leading-tight">
                   {item.value}
                 </p>
               </li>

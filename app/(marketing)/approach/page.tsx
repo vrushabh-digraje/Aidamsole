@@ -5,6 +5,7 @@ import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
 import { OutcomeGrid } from "@/components/sections/OutcomeGrid";
 import { StepsFlow } from "@/components/sections/StepsFlow";
+import { InteractiveApproachAside } from "@/components/sections/InteractiveApproachAside";
 import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { CTAS } from "@/lib/constants";
 import { STATIC_PAGES, buildPageMetadata } from "@/lib/seo";
@@ -102,6 +103,7 @@ export default function ApproachPage() {
         description="Aidamsole designs the operating system your team can run weekly — then configures Zoho to enforce it. Configuration without ownership rules is how implementations fail after go-live."
         primaryCta={CTAS.primary}
         secondaryCta={CTAS.whatsapp}
+        aside={<InteractiveApproachAside />}
       />
 
       <StepsFlow

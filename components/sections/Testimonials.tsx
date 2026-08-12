@@ -1,5 +1,7 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { useState } from "react";
 import {
   Section,
   type SectionSpacing,
@@ -13,6 +15,9 @@ export type TestimonialItem = {
   role: string;
   company: string;
   industry: string;
+  slug?: string;
+  impactMetric?: string;
+  impactLabel?: string;
 };
 
 type TestimonialsProps = {
@@ -31,6 +36,9 @@ const defaultItems: TestimonialItem[] = [
     role: "Sales Head",
     company: "Nova Distributors",
     industry: "Retail & Distribution",
+    slug: "retail-distribution",
+    impactMetric: "0% Leakage",
+    impactLabel: "WhatsApp lead leakage resolved"
   },
   {
     quote:
@@ -39,6 +47,9 @@ const defaultItems: TestimonialItem[] = [
     role: "Operations Director",
     company: "Horizon Estates",
     industry: "Real Estate",
+    slug: "real-estate",
+    impactMetric: "24h Routing",
+    impactLabel: "Broker assignments completed in < 24h"
   },
   {
     quote:
@@ -47,12 +58,20 @@ const defaultItems: TestimonialItem[] = [
     role: "Managing Partner",
     company: "Vertex Manufacturing",
     industry: "Manufacturing",
+    slug: "manufacturing",
+    impactMetric: "100% Floor Sync",
+    impactLabel: "Sales promises synced to shopfloor cogs"
   },
 ];
 
-function Initials({ name }: { name: string }) {
+function Initials({ name, slug }: { name: string; slug?: string }) {
+  let initialsBg = "bg-blue-600";
+  if (slug === "retail-distribution") initialsBg = "bg-amber-500";
+  else if (slug === "real-estate") initialsBg = "bg-sky-500";
+  else if (slug === "manufacturing") initialsBg = "bg-emerald-500";
+
   return (
-    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
+    <span className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm transition-transform duration-300 group-hover:scale-105", initialsBg)}>
       {name
         .split(" ")
         .map((part) => part[0])
@@ -62,10 +81,6 @@ function Initials({ name }: { name: string }) {
   );
 }
 
-/**
- * Homepage testimonials — illustrative quotes for layout/trust until named
- * client permissions are cleared (replace with real quotes when available).
- */
 export function Testimonials({
   tone = "muted",
   spacing = "default",
@@ -74,6 +89,7 @@ export function Testimonials({
   items = defaultItems,
 }: TestimonialsProps) {
   const headingId = "testimonials-heading";
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
     <Section
@@ -83,49 +99,92 @@ export function Testimonials({
       spacing={spacing}
     >
       <div className="mx-auto max-w-2xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+        <p className="text-xs font-bold uppercase tracking-widest text-blue-600">
           Testimonials
         </p>
-        <h2 id={headingId} className="mt-2 text-gray-900">
+        <h2 id={headingId} className="mt-2 text-2xl font-extrabold text-gray-900 sm:text-3xl">
           {title}
         </h2>
-        <p className="mt-3 text-base leading-snug text-gray-600">{description}</p>
+        <p className="mt-3 text-sm md:text-base leading-snug text-gray-500 max-w-md mx-auto">{description}</p>
       </div>
 
       <ul className="mt-10 grid gap-6 md:grid-cols-3">
-        {items.map((item) => (
-          <li key={`${item.company}-${item.name}`}>
-            <figure
-              className={cn(
-                "flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm",
-                "transition duration-300 ease-in-out hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md",
-              )}
+        {items.map((item, index) => {
+          const isHovered = index === activeCard;
+          
+          let borderHoverColor = "hover:border-blue-200";
+          let badgeColor = "text-blue-600 bg-blue-50";
+          if (item.slug === "retail-distribution") {
+            borderHoverColor = "hover:border-amber-200 hover:ring-1 hover:ring-amber-500/10";
+            badgeColor = "text-amber-600 bg-amber-50";
+          } else if (item.slug === "real-estate") {
+            borderHoverColor = "hover:border-sky-200 hover:ring-1 hover:ring-sky-500/10";
+            badgeColor = "text-sky-600 bg-sky-50";
+          } else if (item.slug === "manufacturing") {
+            borderHoverColor = "hover:border-emerald-200 hover:ring-1 hover:ring-emerald-500/10";
+            badgeColor = "text-emerald-600 bg-emerald-50";
+          }
+
+          return (
+            <li 
+              key={`${item.company}-${item.name}`}
+              onMouseEnter={() => setActiveCard(index)}
+              onMouseLeave={() => setActiveCard(null)}
+              className="h-full"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-primary">
-                {item.industry}
-              </p>
-              <blockquote className="mt-3 flex-1 text-sm leading-relaxed text-gray-800 md:text-[15px]">
-                “{item.quote}”
-              </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
-                <Initials name={item.name} />
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-gray-900">{item.name}</p>
-                  <p className="text-xs leading-snug text-gray-600">
-                    {item.role}, {item.company}
+              <figure
+                className={cn(
+                  "group flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm relative overflow-hidden",
+                  "transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md",
+                  borderHoverColor,
+                  isHovered && "scale-[1.01]"
+                )}
+              >
+                {/* Metric callout header */}
+                {item.impactMetric && (
+                  <div className="mb-4 flex items-center justify-between border-b border-gray-100 pb-3">
+                    <div className="min-w-0">
+                      <p className={cn("text-xs font-bold uppercase tracking-wider", badgeColor.split(" ").slice(0, 1).join(" "))}>
+                        {item.industry}
+                      </p>
+                      <p className="text-[10px] text-gray-400 mt-0.5 truncate max-w-[150px]">{item.impactLabel}</p>
+                    </div>
+                    <span className={cn("rounded-lg px-2.5 py-1 text-xs font-extrabold tracking-tight shadow-sm border border-transparent", badgeColor)}>
+                      {item.impactMetric}
+                    </span>
+                  </div>
+                )}
+
+                {!item.impactMetric && (
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+                    {item.industry}
                   </p>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-        ))}
+                )}
+
+                <blockquote className="mt-1 flex-1 text-xs md:text-sm leading-relaxed text-gray-500 font-medium italic">
+                  “{item.quote}”
+                </blockquote>
+
+                <figcaption className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-5">
+                  <Initials name={item.name} slug={item.slug} />
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-gray-900">{item.name}</p>
+                    <p className="text-[10px] leading-snug text-gray-400">
+                      {item.role}, {item.company}
+                    </p>
+                  </div>
+                </figcaption>
+              </figure>
+            </li>
+          );
+        })}
       </ul>
 
-      <p className="mt-8 text-center text-sm text-gray-500">
+      <p className="mt-8 text-center text-xs font-bold text-gray-500">
         Want a reference in your industry?{" "}
         <Link
           href="/contact"
-          className="font-semibold text-primary no-underline hover:underline"
+          className="text-blue-600 no-underline hover:underline"
         >
           Request a reference call →
         </Link>

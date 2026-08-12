@@ -12,12 +12,14 @@ import { PartnerTrust } from "@/components/sections/PartnerTrust";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { Stats, homepageStats } from "@/components/sections/Stats";
 import { SystemFlow } from "@/components/sections/SystemFlow";
+import { InteractiveHeroAside } from "@/components/sections/InteractiveHeroAside";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Trust } from "@/components/sections/Trust";
 import { WhyChoose } from "@/components/sections/WhyChoose";
 import { WhyZoho } from "@/components/sections/WhyZoho";
 import { DirectoryCard } from "@/components/ui/DirectoryCard";
 import { DirectoryIcon } from "@/components/ui/DirectoryIcons";
+import { IndustryHub } from "@/components/sections/IndustryHub";
 import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { CTAS } from "@/lib/constants";
 import {
@@ -121,7 +123,7 @@ export default function HomePage() {
         description="We help mid-sized retail and distribution businesses implement Zoho CRM and connected apps — so sales, stock, and finance run as one system."
         primaryCta={CTAS.primary}
         secondaryCta={CTAS.viewDemo}
-        aside={<SystemFlow showSectionChrome={false} size="lg" autoFlow={false} />}
+        aside={<InteractiveHeroAside />}
       />
 
       <PartnerTrust tone="muted" spacing="compact" />
@@ -139,7 +141,7 @@ export default function HomePage() {
         spacing="compact"
         title="Teams we design systems for"
         description="Illustrative client marks for layout — swap in approved logos when cleared."
-        showTestimonial={false}
+        showTestimonial={true}
       />
 
       <ServicesGrid tone="default" spacing="default" items={services} />
@@ -155,26 +157,15 @@ export default function HomePage() {
         grouped={false}
       />
 
-      <Grid
-        id="industries"
-        tone="muted"
-        spacing="default"
-        eyebrow="Industries"
+      <IndustryHub
         title="Zoho solutions by industry"
         description="Published industry models — start with how your sector runs."
-        columns={4}
-      >
-        {industries.map((item) => (
-          <DirectoryCard
-            key={item.slug}
-            href={`/industries/${item.slug}`}
-            title={item.name}
-            description={item.hero.description}
-            icon={<DirectoryIcon name={item.slug} />}
-            ctaLabel="View industry"
-          />
-        ))}
-      </Grid>
+        items={industries.map((item) => ({
+          slug: item.slug,
+          name: item.name,
+          description: item.hero.description,
+        }))}
+      />
 
       <WhyChoose tone="default" spacing="default" />
 

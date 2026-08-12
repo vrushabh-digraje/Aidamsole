@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import {
   Section,
   type SectionSpacing,
@@ -77,6 +76,66 @@ const defaultNodes: SystemFlowNode[] = [
     icon: "dashboard",
   },
 ];
+
+// Rich process details mapped to icon types
+const flowDetails: Record<
+  SystemFlowNode["icon"],
+  {
+    modules: string;
+    rule: string;
+    deliverable: string;
+    details: string;
+  }
+> = {
+  lead: {
+    modules: "Zoho Forms, Facebook Ads Sync, Webhook Connectors",
+    rule: "UTM tracking parameters mandatory for all entries.",
+    deliverable: "Automated, centralized lead intake pipeline.",
+    details: "All inbound calls, contact forms, and ad campaigns are piped into a single queue. Zero manual copy-pasting required."
+  },
+  crm: {
+    modules: "Zoho CRM Core, Lead Assignment Workflows",
+    rule: "Leads must be assigned to a regional sales rep within 5 minutes.",
+    deliverable: "Dynamic territory-based assignment mapping.",
+    details: "Leads are automatically routed based on region, deal size, or product category. Instant mobile notification triggered for owner."
+  },
+  pipeline: {
+    modules: "Zoho CRM Deals, Layout Rules, Blueprint Gates",
+    rule: "Mandatory qualification fields required before deal stage progression.",
+    deliverable: "Structured sales stage-gate criteria.",
+    details: "Reps must input deal requirements and budget validation before advancing deals from qualification to proposal."
+  },
+  followup: {
+    modules: "Zoho CRM Tasks, Email Templates, Workflow Alerts",
+    rule: "Every open deal must have a scheduled future task date.",
+    deliverable: "Automated next-action rhythm reminders.",
+    details: "System warns managers if a deal is in an active pipeline stage with no future scheduled tasks or follow-up activities."
+  },
+  deal: {
+    modules: "Zoho CRM Quotes, Zoho Sign Integration",
+    rule: "Proposal documents must be signed digitally via secure Zoho Sign.",
+    deliverable: "Unified digital close-won workflow.",
+    details: "Once the proposal is digitally signed, Zoho converts the deal to won, updates inventory counts, and alerts delivery teams."
+  },
+  project: {
+    modules: "Zoho Projects, Custom Status Gates",
+    rule: "Automatic project template deployment upon deal closure.",
+    deliverable: "Structured delivery handoff process.",
+    details: "Pulls scope-of-work parameters from the CRM deal to populate standard milestones, task assignments, and delivery boards."
+  },
+  invoice: {
+    modules: "Zoho Books, Payment Gateway API",
+    rule: "Automated invoice creation triggered on milestones or contract signatures.",
+    deliverable: "Centralized account billing automation.",
+    details: "Drafts and sends professional billing invoices to client emails automatically, appending active online checkout links."
+  },
+  dashboard: {
+    modules: "Zoho Analytics",
+    rule: "Real-time updates mapping conversions, target pipeline, and response times.",
+    deliverable: "Executive sales & operations reporting suite.",
+    details: "Pulls metrics dynamically across CRM, Projects, and Books. Zero manual spreadsheet assembly required for reviews."
+  }
+};
 
 function FlowIcon({
   type,
@@ -191,7 +250,7 @@ function FlowConnector({
         <span
           className={cn(
             "flow-connector-line w-px transition-colors duration-300 ease-in-out",
-            active || false
+            active
               ? "bg-blue-600"
               : "bg-gray-300 group-hover/flow:bg-blue-500",
             large ? "h-5" : "h-4",
@@ -278,50 +337,54 @@ function FlowNode({
   node,
   index,
   highlighted,
-  pathActive,
-  autoActive,
+  isSelected,
+  onClick,
+  onMouseEnter,
   size = "md",
 }: {
   node: SystemFlowNode;
   index: number;
   highlighted?: boolean;
-  pathActive?: boolean;
-  autoActive?: boolean;
+  isSelected?: boolean;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
   size?: "md" | "lg";
 }) {
   const large = size === "lg";
   const step = String(index + 1).padStart(2, "0");
 
   return (
-    <article
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
       className={cn(
-        "group/node flex w-full flex-col items-center text-center",
+        "group/node flex w-full flex-col items-center text-center focus:outline-none",
         large ? "min-w-0" : "min-w-0 sm:min-w-[96px]",
       )}
     >
       <p
         className={cn(
-          "font-semibold tracking-[0.16em] transition-colors duration-300 ease-in-out",
-          pathActive || autoActive || highlighted
-            ? "text-blue-700"
-            : "text-primary group-hover/flow:text-blue-700",
-          large ? "text-xs" : "text-[11px]",
+          "font-semibold tracking-[0.16em] transition-colors duration-300 ease-in-out text-[11px]",
+          isSelected || highlighted
+            ? "text-primary font-bold"
+            : "text-gray-400 group-hover/node:text-primary",
         )}
       >
         {step}
       </p>
 
+      {/* Sharp Node Container (no border radius) */}
       <div
         className={cn(
-          "flow-node-card mt-3 flex items-center justify-center rounded-xl border bg-white text-primary",
-          "transition duration-200 ease-in-out",
-          "hover:border-primary/40",
+          "flow-node-card mt-3 flex items-center justify-center rounded-none border text-primary",
+          "transition duration-200 ease-in-out bg-white shadow-sm",
           large ? "h-[4.5rem] w-[4.5rem]" : "h-14 w-14",
-          highlighted || autoActive
-            ? "border-primary shadow-sm"
-            : pathActive
-              ? "border-primary/40"
-              : "border-gray-200",
+          isSelected
+            ? "border-primary ring-2 ring-primary/10 bg-blue-50/10"
+            : highlighted
+              ? "border-primary shadow-sm"
+              : "border-gray-200 hover:border-primary/50 hover:bg-gray-50/50",
         )}
       >
         <FlowIcon type={node.icon} size={size} />
@@ -329,9 +392,9 @@ function FlowNode({
 
       <h3
         className={cn(
-          "mt-3 font-semibold text-gray-900 transition-colors duration-300 ease-in-out",
-          "group-hover/node:text-blue-700",
-          large ? "max-w-[7.5rem] text-base leading-snug" : "text-sm",
+          "mt-3 font-extrabold text-gray-900 transition-colors duration-300 ease-in-out leading-tight",
+          "group-hover/node:text-primary text-xs",
+          large ? "max-w-[7.5rem] text-sm" : "max-w-[8.5rem]",
         )}
       >
         {node.label}
@@ -339,43 +402,32 @@ function FlowNode({
 
       <p
         className={cn(
-          "mt-1 leading-snug text-gray-600",
-          large ? "max-w-[8rem] text-sm" : "max-w-[8.5rem] text-xs",
+          "mt-1.5 leading-snug text-gray-500 font-semibold select-none",
+          large ? "max-w-[8rem] text-xs" : "max-w-[8.5rem] text-[10px]",
         )}
       >
         {node.caption}
       </p>
-    </article>
+    </button>
   );
 }
 
 function ProductFlow({
   nodes,
+  selectedIndex,
+  onSelectIndex,
   highlightId,
   size,
-  autoFlow = true,
+  autoFlow,
 }: {
   nodes: SystemFlowNode[];
+  selectedIndex: number;
+  onSelectIndex: (idx: number) => void;
   highlightId?: string;
   size: "md" | "lg";
   autoFlow?: boolean;
 }) {
   const large = size === "lg";
-  const [pathHover, setPathHover] = useState(false);
-  const [autoIndex, setAutoIndex] = useState(0);
-
-  useEffect(() => {
-    if (!autoFlow || nodes.length === 0 || pathHover) return;
-    const id = window.setInterval(() => {
-      setAutoIndex((current) => (current + 1) % nodes.length);
-    }, 1600);
-    return () => window.clearInterval(id);
-  }, [autoFlow, nodes.length, pathHover]);
-
-  const sharedProps = {
-    onMouseEnter: () => setPathHover(true),
-    onMouseLeave: () => setPathHover(false),
-  };
 
   if (large) {
     const rows = [nodes.slice(0, 3), nodes.slice(3, 6)];
@@ -385,7 +437,6 @@ function ProductFlow({
         className="group/flow flex h-full w-full flex-col items-center justify-center"
         role="list"
         aria-label="System workflow"
-        {...sharedProps}
       >
         {rows.map((row, rowIndex) => (
           <div key={`row-${rowIndex}`} className="w-full">
@@ -403,8 +454,9 @@ function ProductFlow({
                         node={node}
                         index={globalIndex}
                         size={size}
-                        pathActive={pathHover}
-                        autoActive={autoFlow && !pathHover && autoIndex === globalIndex}
+                        isSelected={selectedIndex === globalIndex}
+                        onClick={() => onSelectIndex(globalIndex)}
+                        onMouseEnter={() => onSelectIndex(globalIndex)}
                         highlighted={Boolean(
                           highlightId && node.id === highlightId,
                         )}
@@ -414,12 +466,7 @@ function ProductFlow({
                       <FlowConnector
                         large
                         orientation="horizontal"
-                        active={
-                          pathHover ||
-                          (autoFlow &&
-                            !pathHover &&
-                            autoIndex > globalIndex)
-                        }
+                        active={selectedIndex >= globalIndex}
                         delayMs={globalIndex * 180}
                       />
                     ) : null}
@@ -432,7 +479,7 @@ function ProductFlow({
                 <FlowConnector
                   large
                   orientation="vertical"
-                  active={pathHover || (autoFlow && !pathHover && autoIndex >= 3)}
+                  active={selectedIndex >= 2}
                   delayMs={600}
                 />
               </div>
@@ -448,7 +495,6 @@ function ProductFlow({
       className="group/flow flex flex-col items-center justify-center md:mx-auto md:w-max md:flex-row md:items-center"
       role="list"
       aria-label="System workflow"
-      {...sharedProps}
     >
       {nodes.map((node, index) => (
         <div
@@ -460,8 +506,9 @@ function ProductFlow({
             node={node}
             index={index}
             size={size}
-            pathActive={pathHover}
-            autoActive={autoFlow && !pathHover && autoIndex === index}
+            isSelected={selectedIndex === index}
+            onClick={() => onSelectIndex(index)}
+            onMouseEnter={() => onSelectIndex(index)}
             highlighted={Boolean(highlightId && node.id === highlightId)}
           />
           {index < nodes.length - 1 ? (
@@ -469,18 +516,14 @@ function ProductFlow({
               <div className="md:hidden">
                 <FlowConnector
                   orientation="vertical"
-                  active={
-                    pathHover || (autoFlow && !pathHover && autoIndex > index)
-                  }
+                  active={selectedIndex >= index}
                   delayMs={index * 180}
                 />
               </div>
               <div className="hidden md:block">
                 <FlowConnector
                   orientation="horizontal"
-                  active={
-                    pathHover || (autoFlow && !pathHover && autoIndex > index)
-                  }
+                  active={selectedIndex >= index}
                   delayMs={index * 180}
                 />
               </div>
@@ -506,23 +549,91 @@ export function SystemFlow({
 }: SystemFlowProps) {
   const headingId = "system-flow-heading";
   const large = size === "lg";
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // Auto Flow sequence loop when not hovered
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (!autoFlow || nodes.length === 0 || isHovered) return;
+    const interval = window.setInterval(() => {
+      setSelectedIndex((current) => (current + 1) % nodes.length);
+    }, 4500);
+    return () => window.clearInterval(interval);
+  }, [autoFlow, nodes.length, isHovered]);
+
+  const activeNode = nodes[selectedIndex] || nodes[0];
+  const activeDetails = flowDetails[activeNode.icon] ?? {
+    modules: "Zoho Suite",
+    rule: "Standard operating process logic.",
+    deliverable: "Workflow automation module.",
+    details: "Configured around specific department process guidelines."
+  };
 
   const flow = (
     <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        "w-full overflow-hidden rounded-2xl border border-gray-200 bg-white",
+        "w-full overflow-hidden rounded-none border border-gray-200 bg-white",
         large
-          ? "px-4 py-6 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.4)] sm:px-6 sm:py-8 md:px-8 md:py-9"
+          ? "px-4 py-6 shadow-md sm:px-6 sm:py-8 md:px-8 md:py-9"
           : "px-5 py-8 shadow-md md:px-8 md:py-10",
         !showSectionChrome && className,
       )}
     >
+      {/* Step Sequence Board */}
       <ProductFlow
         nodes={nodes}
+        selectedIndex={selectedIndex}
+        onSelectIndex={setSelectedIndex}
         highlightId={highlightId}
         size={size}
         autoFlow={autoFlow}
       />
+
+      {/* Interactive Detail Walkthrough Box (Sharp light layout) */}
+      <div className="mt-10 border-t border-gray-150 pt-8 grid grid-cols-1 md:grid-cols-12 gap-6 text-left relative">
+        {/* Left colored bar selector */}
+        <div className="absolute top-8 left-0 bottom-0 w-1 bg-primary hidden md:block" />
+        
+        {/* Step Metadata Left Column */}
+        <div className="md:col-span-4 md:pl-4">
+          <span className="text-[10px] font-bold text-primary bg-blue-50 px-2 py-0.5 border border-blue-100 rounded-none">
+            STAGE {String(selectedIndex + 1).padStart(2, "0")} DELIVERABLE
+          </span>
+          <h4 className="text-base font-extrabold text-gray-900 mt-2.5">
+            {activeNode.label}
+          </h4>
+          <p className="mt-1 text-xs font-semibold text-gray-500">
+            {activeDetails.deliverable}
+          </p>
+        </div>
+
+        {/* Details & Config Rules Right Column */}
+        <div className="md:col-span-8 flex flex-col justify-between">
+          <p className="text-xs leading-relaxed text-gray-600">
+            {activeDetails.details}
+          </p>
+
+          {/* Config details grid */}
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 border border-gray-150 rounded-none text-[10px]">
+            <div>
+              <span className="block text-[8px] font-extrabold text-gray-400 uppercase tracking-wider mb-1">
+                Active Modules
+              </span>
+              <span className="font-bold text-gray-700">{activeDetails.modules}</span>
+            </div>
+            <div>
+              <span className="block text-[8px] font-extrabold text-gray-400 uppercase tracking-wider mb-1">
+                Enforced Validation Rule
+              </span>
+              <span className="font-bold text-primary">{activeDetails.rule}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 
