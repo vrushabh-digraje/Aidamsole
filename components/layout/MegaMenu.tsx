@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 import type { MegaMenuPanel, NavItem } from "@/lib/navigation";
 import { megaMenu } from "@/lib/navigation";
@@ -97,7 +99,7 @@ const iconThemePresets: Record<
     activeBg: "group-hover:bg-yellow-500 group-hover:text-white group-hover:border-yellow-500",
     image: "/brand/platform-people.jpg",
     gradient: "from-slate-950/95 via-slate-950/90 to-yellow-950/40",
-    opacity: "group-hover:opacity-20" // Reduce opacity for the light-themed Zoho People mockup
+    opacity: "group-hover:opacity-20"
   },
   "desk": {
     bg: "bg-rose-50",
@@ -202,7 +204,7 @@ function MenuIcon({ name }: { name?: string }) {
     <span
       aria-hidden="true"
       className={cn(
-        "flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border text-[9px] font-extrabold uppercase tracking-wider transition-all duration-300 group-hover:scale-110 group-hover:rotate-3",
+        "flex h-8 w-8 shrink-0 items-center justify-center rounded-none border text-[9px] font-extrabold uppercase tracking-wider transition-all duration-300 group-hover:scale-110 group-hover:rotate-3",
         theme.bg,
         theme.border,
         theme.text,
@@ -218,24 +220,28 @@ function PanelShell({
   children,
   className,
   labelledBy,
+  isOpen,
 }: {
   children: ReactNode;
   className?: string;
   labelledBy: string;
+  isOpen: boolean;
 }) {
   return (
     <div
       role="region"
       aria-labelledby={labelledBy}
       className={cn(
-        "pointer-events-none invisible absolute left-1/2 top-full z-45 w-[min(100vw-2rem,56rem)] -translate-x-1/2 pt-2 opacity-0",
-        "transition-all duration-300 ease-in-out delay-150 translate-y-2 scale-98",
-        "group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-hover:delay-100 group-hover:translate-y-0 group-hover:scale-100",
-        "group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:delay-100 group-focus-within:translate-y-0 group-focus-within:scale-100",
+        "absolute left-1/2 top-full z-45 w-[min(100vw-2rem,56rem)] -translate-x-1/2 pt-2",
+        "transition-all duration-300 ease-in-out translate-y-2 scale-98",
+        isOpen
+          ? "pointer-events-auto visible opacity-100 translate-y-0 scale-100"
+          : "pointer-events-none invisible opacity-0",
         className,
       )}
     >
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-xl ring-1 ring-black/5">
+      {/* Sharp border and panel layout */}
+      <div className="rounded-none border border-gray-200 bg-white p-6 shadow-xl ring-1 ring-black/5">
         {children}
       </div>
     </div>
@@ -246,10 +252,12 @@ function PanelHeader({
   title,
   description,
   href,
+  onLinkClick,
 }: {
   title: string;
   description: string;
   href: string;
+  onLinkClick: () => void;
 }) {
   return (
     <div className="flex items-end justify-between gap-6 border-b border-gray-100 pb-4">
@@ -261,6 +269,7 @@ function PanelHeader({
       </div>
       <Link
         href={href}
+        onClick={onLinkClick}
         className="shrink-0 text-xs font-bold text-gray-500 no-underline transition duration-300 ease-in-out hover:text-blue-600 hover:underline"
       >
         View all
@@ -273,17 +282,22 @@ function SolutionsPanel({
   items,
   labelledBy,
   href,
+  isOpen,
+  onLinkClick,
 }: {
   items: NavItem[];
   labelledBy: string;
   href: string;
+  isOpen: boolean;
+  onLinkClick: () => void;
 }) {
   return (
-    <PanelShell labelledBy={labelledBy} className="max-w-4xl">
+    <PanelShell labelledBy={labelledBy} className="max-w-4xl" isOpen={isOpen}>
       <PanelHeader
         title="Solutions"
         description="Systems for sales, delivery, finance, and leadership review."
         href={href}
+        onLinkClick={onLinkClick}
       />
       <ul className="mt-4 grid grid-cols-2 gap-4">
         {items.map((item) => {
@@ -320,8 +334,9 @@ function SolutionsPanel({
             <li key={item.href} className="h-full">
               <Link
                 href={item.href}
+                onClick={onLinkClick}
                 className={cn(
-                  "group block rounded-2xl border p-4 h-full no-underline transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-xl relative overflow-hidden bg-slate-950",
+                  "group block rounded-none border p-4 h-full no-underline transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-xl relative overflow-hidden bg-slate-950",
                   cardStyle,
                   hoverBorder
                 )}
@@ -354,7 +369,7 @@ function SolutionsPanel({
                       </span>
                     </div>
                     {item.description ? (
-                      <p className="mt-2.5 text-[11px] leading-relaxed text-gray-500 font-medium transition-colors duration-300 group-hover:text-gray-355">
+                      <p className="mt-2.5 text-[11px] leading-relaxed text-gray-500 font-medium transition-colors duration-300 group-hover:text-gray-300">
                         {item.description}
                       </p>
                     ) : null}
@@ -373,17 +388,22 @@ function IndustriesPanel({
   items,
   labelledBy,
   href,
+  isOpen,
+  onLinkClick,
 }: {
   items: NavItem[];
   labelledBy: string;
   href: string;
+  isOpen: boolean;
+  onLinkClick: () => void;
 }) {
   return (
-    <PanelShell labelledBy={labelledBy} className="max-w-4xl">
+    <PanelShell labelledBy={labelledBy} className="max-w-4xl" isOpen={isOpen}>
       <PanelHeader 
         title="Industries" 
         description="Industry process models across India and the UAE." 
         href={href} 
+        onLinkClick={onLinkClick}
       />
       <ul className="mt-4 grid grid-cols-3 gap-4">
         {items.map((item) => {
@@ -398,8 +418,9 @@ function IndustriesPanel({
             <li key={item.href} className="h-full">
               <Link
                 href={item.href}
+                onClick={onLinkClick}
                 className={cn(
-                  "group block rounded-2xl border p-4 h-full no-underline transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-xl relative overflow-hidden bg-slate-950",
+                  "group block rounded-none border p-4 h-full no-underline transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-xl relative overflow-hidden bg-slate-950",
                   theme.border.replace("border-", "hover:border-")
                 )}
               >
@@ -450,17 +471,22 @@ function PlatformPanel({
   items,
   labelledBy,
   href,
+  isOpen,
+  onLinkClick,
 }: {
   items: NavItem[];
   labelledBy: string;
   href: string;
+  isOpen: boolean;
+  onLinkClick: () => void;
 }) {
   return (
-    <PanelShell labelledBy={labelledBy} className="max-w-4xl">
+    <PanelShell labelledBy={labelledBy} className="max-w-4xl" isOpen={isOpen}>
       <PanelHeader
         title="Zoho Platform"
         description="Module-level implementation across the Zoho stack."
         href={href}
+        onLinkClick={onLinkClick}
       />
       <ul className="mt-4 grid grid-cols-3 gap-4">
         {items.map((item) => {
@@ -521,8 +547,9 @@ function PlatformPanel({
             <li key={item.href} className="h-full">
               <Link
                 href={item.href}
+                onClick={onLinkClick}
                 className={cn(
-                  "group block rounded-2xl border p-4 h-full no-underline transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-xl relative overflow-hidden bg-slate-950",
+                  "group block rounded-none border p-4 h-full no-underline transition-all duration-500 ease-in-out hover:-translate-y-1 hover:shadow-xl relative overflow-hidden bg-slate-950",
                   cardStyle,
                   hoverBorder
                 )}
@@ -555,7 +582,7 @@ function PlatformPanel({
                       </span>
                     </div>
                     {item.description ? (
-                      <p className="mt-2.5 text-[10px] leading-relaxed text-gray-500 font-medium transition-colors duration-300 group-hover:text-gray-350">
+                      <p className="mt-2.5 text-[10px] leading-relaxed text-gray-500 font-medium transition-colors duration-300 group-hover:text-gray-300">
                         {item.description}
                       </p>
                     ) : null}
@@ -570,76 +597,21 @@ function PlatformPanel({
   );
 }
 
-function GridPanel({
-  title,
-  description,
-  items,
-  labelledBy,
-  href,
-  columns = 4,
-}: {
-  title: string;
-  description: string;
-  items: NavItem[];
-  labelledBy: string;
-  href: string;
-  columns?: 3 | 4;
-}) {
-  return (
-    <PanelShell
-      labelledBy={labelledBy}
-      className={columns === 4 ? "max-w-3xl" : "max-w-2xl"}
-    >
-      <PanelHeader title={title} description={description} href={href} />
-      <ul
-        className={cn(
-          "mt-4 grid gap-2",
-          columns === 4
-            ? "grid-cols-2 sm:grid-cols-4"
-            : "grid-cols-2 sm:grid-cols-3",
-        )}
-      >
-        {items.map((item) => {
-          const theme = iconThemePresets[item.icon ?? ""] ?? { border: "hover:border-blue-200" };
-          
-          return (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className={cn(
-                  "group grid h-full grid-cols-[auto_1fr] items-center gap-3 rounded-xl border border-gray-150 px-3 py-3 no-underline transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-gray-50/50 hover:no-underline hover:shadow-md",
-                  theme.border.replace("border-", "hover:border-")
-                )}
-              >
-                <MenuIcon name={item.icon} />
-                <span className="min-w-0">
-                  <span className="block text-[11px] font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-350">
-                    {item.label}
-                  </span>
-                  {item.description ? (
-                    <span className="mt-0.5 block text-[10px] text-gray-400 font-medium">
-                      {item.description}
-                    </span>
-                  ) : null}
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </PanelShell>
-  );
-}
-
 function MegaMenuItem({ panel }: { panel: MegaMenuPanel }) {
+  const [isOpen, setIsOpen] = useState(false);
   const triggerId = `megamenu-${panel.label.toLowerCase().replace(/\s+/g, "-")}`;
   const hasPanel = panel.type !== "link" && Boolean(panel.items?.length);
 
   return (
-    <div className="group relative flex h-11 items-center">
+    <div 
+      className="group relative flex h-11 items-center"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <Link
         id={triggerId}
         href={panel.href}
+        onClick={() => setIsOpen(false)}
         className="inline-flex h-full items-center border-b-2 border-transparent px-2.5 text-xs font-semibold text-gray-600 no-underline transition duration-200 ease-out hover:bg-gray-50/50 hover:text-gray-900 hover:no-underline group-hover:border-blue-600 group-hover:text-gray-900 group-focus-within:border-blue-600 group-focus-within:text-gray-900"
       >
         {panel.label}
@@ -650,6 +622,8 @@ function MegaMenuItem({ panel }: { panel: MegaMenuPanel }) {
           items={panel.items ?? []}
           labelledBy={triggerId}
           href={panel.href}
+          isOpen={isOpen}
+          onLinkClick={() => setIsOpen(false)}
         />
       ) : null}
 
@@ -658,6 +632,8 @@ function MegaMenuItem({ panel }: { panel: MegaMenuPanel }) {
           items={panel.items ?? []}
           labelledBy={triggerId}
           href={panel.href}
+          isOpen={isOpen}
+          onLinkClick={() => setIsOpen(false)}
         />
       ) : null}
 
@@ -666,6 +642,8 @@ function MegaMenuItem({ panel }: { panel: MegaMenuPanel }) {
           items={panel.items ?? []}
           labelledBy={triggerId}
           href={panel.href}
+          isOpen={isOpen}
+          onLinkClick={() => setIsOpen(false)}
         />
       ) : null}
     </div>

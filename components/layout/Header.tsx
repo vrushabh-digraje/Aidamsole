@@ -27,7 +27,7 @@ export function Header({ showTopBar = true }: HeaderProps) {
             <Button
               href={PRIMARY_CTA.href}
               size="sm"
-              className="rounded-lg px-3 py-2 text-xs font-semibold sm:px-5 sm:text-sm"
+              className="rounded-none px-3 py-2 text-xs font-semibold sm:px-5 sm:text-sm"
             >
               {PRIMARY_CTA.label}
             </Button>
