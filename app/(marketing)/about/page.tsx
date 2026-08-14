@@ -16,10 +16,10 @@ export default function AboutPage() {
   return (
     <>
       <div className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
           
           {/* 1. 2-Column Intro Section */}
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center pb-16 border-b border-gray-100 mb-16">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center pb-12 border-b border-gray-100 mb-12">
             {/* Left Column: Corporate profile */}
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-wider text-primary">
@@ -68,7 +68,7 @@ export default function AboutPage() {
             </div>
 
             {/* Right Column: Hero Image Showcase (Sharp Corners to match card design) */}
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-none border border-gray-200 shadow-xl ring-1 ring-black/5 transition-transform duration-500 hover:scale-[1.01] hover:shadow-2xl bg-gray-50">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-none border border-gray-200 shadow-xl ring-1 ring-black/5 transition-transform duration-500 hover:scale-[1.01] hover:shadow-2xl bg-gray-50">
               <Image
                 src="/brand/about-hero.jpg"
                 alt="Zoho Authorized Partner analytics and implementation console"
@@ -77,12 +77,98 @@ export default function AboutPage() {
                 className="object-cover rounded-none"
                 sizes="(max-w-7xl) 50vw, 100vw"
               />
-              {/* Tech gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/5 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
 
-          {/* 2. Region Cards Title */}
+          {/* 2. Our Mission Section */}
+          <div className="py-16 border-b border-gray-100 mb-16 grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                Our Mission
+              </p>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+                Building trustable systems that drive real growth
+              </h2>
+              <p className="mt-6 text-sm leading-relaxed text-gray-600">
+                Our goal is simple: to eliminate the friction in your sales, operations, and finance pipelines. We design Zoho systems that your team wants to use and that your leadership can rely on.
+              </p>
+            </div>
+            <div className="lg:col-span-7 space-y-6">
+              <div className="border-l-2 border-primary pl-5">
+                <h3 className="text-sm font-bold text-gray-900">Zero System Fluff</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-gray-600">
+                  We don't sell over-engineered modules. We configure Zoho around your active processes, stages, and metrics to ensure immediate business usability.
+                </p>
+              </div>
+              <div className="border-l-2 border-primary pl-5">
+                <h3 className="text-sm font-bold text-gray-900">End-to-End Ownership</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-gray-600">
+                  A system is only as good as its adoption. We train your teams extensively and hand over structured documentation so you own your digital ecosystem completely.
+                </p>
+              </div>
+              <div className="border-l-2 border-primary pl-5">
+                <h3 className="text-sm font-bold text-gray-900">Real-Time Clarity</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-gray-600">
+                  We integrate sales pipelines, inventory counts, and invoicing so your dashboards show real-time profit, loss, and lead conversion rates.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Why Choose Us Section */}
+          <div className="pb-16 border-b border-gray-100 mb-16">
+            <div className="max-w-3xl">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                Why Choose Us
+              </p>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+                Why businesses partner with Aidamsole
+              </h2>
+            </div>
+            
+            <div className="mt-10 grid gap-6 sm:grid-cols-3">
+              {/* Feature 1 */}
+              <div className="border border-gray-200 bg-gray-50/30 p-6 flex flex-col justify-between">
+                <div>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-none bg-primary/5 text-primary text-sm font-bold">
+                    01
+                  </span>
+                  <h3 className="mt-5 text-sm font-bold text-gray-900">Zoho Certified Partner</h3>
+                  <p className="mt-3 text-xs leading-relaxed text-gray-500">
+                    We possess deep technical knowledge of Zoho's full stack, ensuring clean APIs, reliable custom scripts, and native Zoho CRM integrations.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Feature 2 */}
+              <div className="border border-gray-200 bg-gray-50/30 p-6 flex flex-col justify-between">
+                <div>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-none bg-primary/5 text-primary text-sm font-bold">
+                    02
+                  </span>
+                  <h3 className="mt-5 text-sm font-bold text-gray-900">100% In-House Delivery</h3>
+                  <p className="mt-3 text-xs leading-relaxed text-gray-500">
+                    We never outsource. Every line of code, process map, and database node is built in-house by our certified engineering team.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Feature 3 */}
+              <div className="border border-gray-200 bg-gray-50/30 p-6 flex flex-col justify-between">
+                <div>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-none bg-primary/5 text-primary text-sm font-bold">
+                    03
+                  </span>
+                  <h3 className="mt-5 text-sm font-bold text-gray-900">90-Day Post-Launch Support</h3>
+                  <p className="mt-3 text-xs leading-relaxed text-gray-500">
+                    We stand by our work. We provide 90 days of active post-go-live assistance to iron out issues and guarantee team adoption.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4. Region Cards Title */}
           <div className="mb-8">
             <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
               Regional Operations

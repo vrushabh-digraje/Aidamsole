@@ -20,46 +20,6 @@ export default function InsightsPage() {
     <>
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          
-          {/* 1. 2-Column Intro Section */}
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center pb-16 border-b border-gray-100 mb-16">
-            {/* Left Column: Title & Description */}
-            <div className="max-w-xl">
-              <p className="text-xs font-bold uppercase tracking-wider text-primary">
-                Insights
-              </p>
-              <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-                Zoho implementation notes
-              </h1>
-              <p className="mt-5 text-base leading-relaxed text-gray-600 sm:text-lg">
-                Practical writing on CRM adoption, operating design, and Zoho
-                implementation patterns.
-              </p>
-              
-              <div className="mt-8">
-                <Link
-                  href={ROUTES.contact}
-                  className="inline-flex items-center justify-center bg-primary px-5 py-3 text-sm font-semibold text-white shadow-md hover:bg-primary/95 transition duration-300 no-underline hover:no-underline rounded-none"
-                >
-                  Book Free Consultation
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Column: Hero Showcase Image (Sharp corners to match cards) */}
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-none border border-gray-200 shadow-xl ring-1 ring-black/5 transition-transform duration-500 hover:scale-[1.01] hover:shadow-2xl bg-gray-50">
-              <Image
-                src="/brand/insights-hero.jpg"
-                alt="Zoho Analytics Dashboard representing business insights and metrics"
-                fill
-                priority
-                className="object-cover rounded-none"
-                sizes="(max-w-7xl) 50vw, 100vw"
-              />
-              {/* Tech gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/5 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </div>
 
           {/* 2. Grid section title */}
           <div className="mb-8">

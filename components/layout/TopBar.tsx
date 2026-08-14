@@ -26,12 +26,6 @@ export function TopBar({
             {label}
           </p>
         </Link>
-        <Link
-          href={ROUTES.contact}
-          className="shrink-0 text-[11px] font-semibold text-white/90 no-underline hover:text-white hover:underline"
-        >
-          Book consultation →
-        </Link>
       </Container>
     </div>
   );

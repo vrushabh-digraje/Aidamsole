@@ -4,7 +4,7 @@ export const SITE = {
   description:
     "Zoho Authorized Partner for retail & distribution and mid-sized businesses across India & GCC. Zoho CRM implementation, consulting, training, and support.",
   tagline: "Zoho Authorized Partner",
-  email: "contact@aidamsole.com",
+  email: "sales@aidamsole.com",
   /** WhatsApp (India) — digits only with country code */
   whatsapp: "919356917424",
   phones: {

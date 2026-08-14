@@ -18,6 +18,8 @@ const stepToCrmView: Partial<
   lead: { view: "leads", highlight: false, label: "Lead Capture" },
   crm: { view: "leads", highlight: false, label: "CRM Management" },
   deal: { view: "deals", highlight: true, label: "Deal Pipeline" },
+  project: { view: "projects", highlight: false, label: "Project Execution" },
+  invoice: { view: "finance", highlight: false, label: "Invoicing" },
   dashboard: { view: "dashboard", highlight: false, label: "Dashboard" },
 };
 
@@ -25,6 +27,8 @@ const crmViewToStep: Record<CRMView, string> = {
   leads: "crm",
   deals: "deal",
   dashboard: "dashboard",
+  projects: "project",
+  finance: "invoice",
 };
 
 function scrollToCrmPreview() {

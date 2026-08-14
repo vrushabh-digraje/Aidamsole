@@ -42,10 +42,10 @@ export default function SolutionsIndexPage() {
       <FaqJsonLd items={faqs} />
 
       <div className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6 py-10 md:py-12">
           
           {/* 1. 2-Column Intro Section */}
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center pb-16 border-b border-gray-100 mb-16">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center pb-12 border-b border-gray-100 mb-12">
             {/* Left Column: Title & Description */}
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-wider text-primary">
@@ -70,7 +70,7 @@ export default function SolutionsIndexPage() {
             </div>
 
             {/* Right Column: Hero Showcase Image */}
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-none border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-transform duration-500 hover:scale-[1.01] hover:shadow-3xl">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-none border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-transform duration-500 hover:scale-[1.01] hover:shadow-3xl">
               <Image
                 src="/brand/solutions-hero.jpg"
                 alt="Corporate Functional Solutions Dashboard (Sales, Projects, Invoices, Support)"

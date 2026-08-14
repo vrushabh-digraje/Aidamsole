@@ -9,7 +9,7 @@ import {
 } from "@/components/layout/Section";
 import { cn } from "@/lib/utils";
 
-export type CRMView = "dashboard" | "leads" | "deals";
+export type CRMView = "dashboard" | "leads" | "deals" | "projects" | "finance";
 
 type PipelineCard = {
   id: string;
@@ -45,14 +45,16 @@ const primaryTabs: { id: CRMView; label: string }[] = [
   { id: "dashboard", label: "Dashboard" },
   { id: "leads", label: "Leads" },
   { id: "deals", label: "Deals" },
+  { id: "projects", label: "Projects" },
+  { id: "finance", label: "Finance" },
 ];
 
 const moduleNav = [
   { id: "dashboard", label: "Dashboard", interactive: true },
   { id: "leads", label: "Leads", interactive: true },
   { id: "deals", label: "Deals", interactive: true },
-  { id: "projects", label: "Projects", interactive: false },
-  { id: "finance", label: "Finance", interactive: false },
+  { id: "projects", label: "Projects", interactive: true },
+  { id: "finance", label: "Finance", interactive: true },
 ] as const;
 
 const stats: StatCard[] = [
@@ -203,6 +205,108 @@ const pipelineStages: PipelineStage[] = [
   },
 ];
 
+type ProjectRow = {
+  id: string;
+  name: string;
+  client: string;
+  progress: number;
+  status: "Planning" | "Active" | "UAT" | "Completed";
+  dueDate: string;
+  owner: string;
+};
+
+const projects: ProjectRow[] = [
+  {
+    id: "proj1",
+    name: "Ajman Portal Integration",
+    client: "Ajman Free Zone Co",
+    progress: 35,
+    status: "Active",
+    dueDate: "Sep 15, 2026",
+    owner: "Priya N.",
+  },
+  {
+    id: "proj2",
+    name: "CRM Pipeline Handoff",
+    client: "Greenfield Realty",
+    progress: 75,
+    status: "Active",
+    dueDate: "Aug 28, 2026",
+    owner: "Rahul S.",
+  },
+  {
+    id: "proj3",
+    name: "Global POS Sync System",
+    client: "Global Retail POS",
+    progress: 90,
+    status: "UAT",
+    dueDate: "Aug 20, 2026",
+    owner: "Amit K.",
+  },
+  {
+    id: "proj4",
+    name: "Financial Ledgers Setup",
+    client: "ABC Developers",
+    progress: 10,
+    status: "Planning",
+    dueDate: "Oct 05, 2026",
+    owner: "Neha J.",
+  },
+  {
+    id: "proj5",
+    name: "Sales Pipeline Blueprint",
+    client: "Prime Developers",
+    progress: 100,
+    status: "Completed",
+    dueDate: "Jul 30, 2026",
+    owner: "Ankit R.",
+  },
+];
+
+type InvoiceRow = {
+  id: string;
+  client: string;
+  amount: string;
+  status: "Paid" | "Sent" | "Overdue" | "Draft";
+  issueDate: string;
+  dueDate: string;
+};
+
+const invoices: InvoiceRow[] = [
+  {
+    id: "INV-2026-081",
+    client: "Greenfield Realty",
+    amount: "₹6,00,000",
+    status: "Paid",
+    issueDate: "Aug 10, 2026",
+    dueDate: "Sep 10, 2026",
+  },
+  {
+    id: "INV-2026-082",
+    client: "Ajman Free Zone",
+    amount: "₹4,25,000",
+    status: "Sent",
+    issueDate: "Aug 12, 2026",
+    dueDate: "Sep 12, 2026",
+  },
+  {
+    id: "INV-2026-083",
+    client: "Global Retail POS",
+    amount: "₹9,25,000",
+    status: "Overdue",
+    issueDate: "Jul 25, 2026",
+    dueDate: "Aug 10, 2026",
+  },
+  {
+    id: "INV-2026-084",
+    client: "ABC Developers",
+    amount: "₹3,50,000",
+    status: "Draft",
+    issueDate: "Aug 14, 2026",
+    dueDate: "Sep 15, 2026",
+  },
+];
+
 const viewMeta: Record<
   CRMView,
   { title: string; subtitle: string; action: string }
@@ -221,6 +325,16 @@ const viewMeta: Record<
     title: "Deal pipeline",
     subtitle: "Stage-by-stage visibility from inquiry to close",
     action: "New deal",
+  },
+  projects: {
+    title: "Project execution",
+    subtitle: "Active project delivery, milestones, and task checklists",
+    action: "New project",
+  },
+  finance: {
+    title: "Invoicing & billing",
+    subtitle: "Invoices, payment tracking, and billing ledger",
+    action: "New invoice",
   },
 };
 
@@ -576,6 +690,112 @@ function DealsView({ highlight }: { highlight?: boolean }) {
   );
 }
 
+function ProjectsView() {
+  return (
+    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-gray-200 bg-gray-50 px-4 py-2.5">
+        <p className="text-xs font-semibold text-gray-700">
+          Active Client Deliveries
+        </p>
+        <span className="rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[11px] font-semibold text-primary">
+          Stage 04 Active
+        </span>
+      </div>
+      <ul className="divide-y divide-gray-100">
+        {projects.map((proj) => {
+          let statusStyle = "bg-sky-50 text-sky-700 border-sky-100";
+          if (proj.status === "Completed") statusStyle = "bg-emerald-50 text-emerald-700 border-emerald-100";
+          else if (proj.status === "UAT") statusStyle = "bg-amber-50 text-amber-700 border-amber-100";
+          else if (proj.status === "Planning") statusStyle = "bg-gray-50 text-gray-700 border-gray-200";
+
+          return (
+            <li key={proj.id} className="group p-4 transition duration-200 hover:bg-primary/[0.02]">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                    {proj.name}
+                  </h4>
+                  <p className="text-xs text-gray-500">{proj.client}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={cn("inline-flex rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase", statusStyle)}>
+                    {proj.status}
+                  </span>
+                  <span className="text-[11px] text-gray-400 font-medium">{proj.dueDate}</span>
+                </div>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="mt-3 flex items-center gap-3">
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
+                  <div
+                    className="h-full rounded-full bg-primary transition-all duration-500"
+                    style={{ width: `${proj.progress}%` }}
+                  />
+                </div>
+                <span className="text-xs font-bold text-gray-600 w-8 text-right">
+                  {proj.progress}%
+                </span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function FinanceView() {
+  return (
+    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-gray-200 bg-gray-50 px-4 py-2.5">
+        <p className="text-xs font-semibold text-gray-700">
+          Recent Invoices & Collections
+        </p>
+        <span className="rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[11px] font-semibold text-primary">
+          Stage 05 Active
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-gray-150 text-[10px] font-bold uppercase tracking-[0.08em] text-gray-500 bg-gray-50/50">
+              <th className="px-4 py-2">Invoice #</th>
+              <th className="px-4 py-2">Client Name</th>
+              <th className="px-4 py-2">Amount</th>
+              <th className="px-4 py-2 text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 text-xs">
+            {invoices.map((inv) => {
+              let statusStyle = "bg-gray-50 text-gray-600";
+              if (inv.status === "Paid") statusStyle = "bg-emerald-50 text-emerald-700 border-emerald-100";
+              else if (inv.status === "Sent") statusStyle = "bg-sky-50 text-sky-700 border-sky-100";
+              else if (inv.status === "Overdue") statusStyle = "bg-rose-50 text-rose-700 border-rose-100";
+
+              return (
+                <tr key={inv.id} className="hover:bg-primary/[0.02] transition duration-200">
+                  <td className="px-4 py-3 font-semibold text-gray-900">{inv.id}</td>
+                  <td className="px-4 py-3 text-gray-600">
+                    <p className="font-semibold text-gray-800">{inv.client}</p>
+                    <p className="text-[10px] text-gray-400">Due: {inv.dueDate}</p>
+                  </td>
+                  <td className="px-4 py-3 font-bold text-gray-900">{inv.amount}</td>
+                  <td className="px-4 py-3 text-right">
+                    <span className={cn("inline-flex rounded-md border px-2 py-0.5 text-[10px] font-extrabold uppercase", statusStyle)}>
+                      {inv.status}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 function ProductTabs({
   activeView,
   onChange,
@@ -834,6 +1054,16 @@ function CRMShell({
                     {leads.length} records
                   </span>
                 ) : null}
+                {activeView === "projects" ? (
+                  <span className="rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 text-[11px] font-semibold text-gray-600">
+                    {projects.length} active
+                  </span>
+                ) : null}
+                {activeView === "finance" ? (
+                  <span className="rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 text-[11px] font-semibold text-gray-600">
+                    {invoices.length} invoices
+                  </span>
+                ) : null}
                 <span className="cursor-default rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
                   {meta.action}
                 </span>
@@ -848,6 +1078,8 @@ function CRMShell({
                 {activeView === "deals" ? (
                   <DealsView highlight={highlightPipeline} />
                 ) : null}
+                {activeView === "projects" ? <ProjectsView /> : null}
+                {activeView === "finance" ? <FinanceView /> : null}
               </div>
             </div>
           </div>

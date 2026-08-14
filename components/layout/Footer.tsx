@@ -205,31 +205,6 @@ export function Footer() {
                     ))}
                   </p>
                 </div>
-
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                      UAE
-                    </p>
-                  </div>
-                  <a
-                    href={`tel:${SITE.phones.uae.tel}`}
-                    className="mt-1.5 inline-flex items-center text-xs text-gray-300 transition-colors hover:text-blue-400 font-semibold"
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5 mr-1.5 text-blue-500" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                    </svg>
-                    {SITE.phones.uae.display}
-                  </a>
-                  <p className="mt-2 text-[11px] leading-relaxed text-gray-400 pl-5">
-                    {SITE.addresses.uae.lines.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </p>
-                </div>
               </div>
             </div>
 

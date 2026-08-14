@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Section,
   type SectionSpacing,
@@ -32,6 +33,7 @@ const industryDetails: Record<string, {
   colorClass: string;
   accentBorder: string;
   flowSvg: React.ReactNode;
+  bgImage: string;
 }> = {
   "retail-distribution": {
     challenge: "Managing omnichannel stock sync, dealer orders, and collections across distribution channels.",
@@ -39,6 +41,7 @@ const industryDetails: Record<string, {
     badge: "Inventory & Trade Sync",
     colorClass: "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100/50",
     accentBorder: "border-l-amber-500",
+    bgImage: "/brand/case-study-retail.jpg",
     flowSvg: (
       <div className="flex flex-col gap-2 w-full max-w-[240px] text-xs">
         <div className="flex items-center justify-between p-2 rounded-lg border border-amber-200 bg-white">
@@ -64,6 +67,7 @@ const industryDetails: Record<string, {
     badge: "Lead & Agent Routing",
     colorClass: "bg-sky-50 text-sky-600 border-sky-200 hover:bg-sky-100/50",
     accentBorder: "border-l-sky-500",
+    bgImage: "/brand/case-study-real-estate.jpg",
     flowSvg: (
       <div className="flex flex-col gap-2 w-full max-w-[240px] text-xs">
         <div className="flex items-center justify-between p-2 rounded-lg border border-sky-200 bg-white">
@@ -89,6 +93,7 @@ const industryDetails: Record<string, {
     badge: "Quote to Production",
     colorClass: "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100/50",
     accentBorder: "border-l-emerald-500",
+    bgImage: "/brand/case-study-manufacturing.jpg",
     flowSvg: (
       <div className="flex flex-col gap-2 w-full max-w-[240px] text-xs">
         <div className="flex items-center justify-between p-2 rounded-lg border border-emerald-200 bg-white">
@@ -114,6 +119,7 @@ const industryDetails: Record<string, {
     badge: "Patient Flow Systems",
     colorClass: "bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-100/50",
     accentBorder: "border-l-rose-500",
+    bgImage: "/brand/case-study-healthcare.jpg",
     flowSvg: (
       <div className="flex flex-col gap-2 w-full max-w-[240px] text-xs">
         <div className="flex items-center justify-between p-2 rounded-lg border border-rose-200 bg-white">
@@ -139,6 +145,7 @@ const industryDetails: Record<string, {
     badge: "Student Intake Sync",
     colorClass: "bg-indigo-50 text-indigo-600 border-indigo-200 hover:bg-indigo-100/50",
     accentBorder: "border-l-indigo-500",
+    bgImage: "/brand/case-study-education.jpg",
     flowSvg: (
       <div className="flex flex-col gap-2 w-full max-w-[240px] text-xs">
         <div className="flex items-center justify-between p-2 rounded-lg border border-indigo-200 bg-white">
@@ -164,6 +171,7 @@ const industryDetails: Record<string, {
     badge: "Milestone Billing Sync",
     colorClass: "bg-teal-50 text-teal-600 border-teal-200 hover:bg-teal-100/50",
     accentBorder: "border-l-teal-500",
+    bgImage: "/brand/case-study-service.jpg",
     flowSvg: (
       <div className="flex flex-col gap-2 w-full max-w-[240px] text-xs">
         <div className="flex items-center justify-between p-2 rounded-lg border border-teal-200 bg-white">
@@ -263,8 +271,18 @@ export function IndustryHub({
         {/* Right column: Interactive blueprint monitor (Takes 7/12 columns on large screens) */}
         <div className="h-full flex flex-col justify-center lg:col-span-7 w-full">
           <div className="w-full rounded-2xl border border-gray-200 bg-white p-6 shadow-md relative overflow-hidden flex flex-col justify-between min-h-[350px]">
+            {/* Subtle background image watermark */}
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none transition-all duration-700 select-none">
+              <Image
+                src={detail?.bgImage ?? "/brand/case-study-retail.jpg"}
+                alt=""
+                fill
+                className="object-cover transition-opacity duration-700"
+              />
+            </div>
+
             {/* Window control header */}
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3 relative z-10">
               <div className="flex gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-red-400/80"></span>
                 <span className="h-3 w-3 rounded-full bg-yellow-400/80"></span>
@@ -276,7 +294,7 @@ export function IndustryHub({
             </div>
 
             {/* Inner blueprint core content */}
-            <div className="my-auto py-5 grid md:grid-cols-2 gap-6 items-center">
+            <div className="my-auto py-5 grid md:grid-cols-2 gap-6 items-center relative z-10">
               <div>
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Primary challenge:</p>
                 <p className="mt-1.5 text-xs text-gray-600 leading-relaxed font-semibold">
@@ -295,7 +313,7 @@ export function IndustryHub({
             </div>
 
             {/* Bottom link trigger */}
-            <div className="border-t border-gray-100 pt-3 flex justify-between items-center">
+            <div className="border-t border-gray-100 pt-3 flex justify-between items-center relative z-10">
               <span className="text-[10px] text-gray-400 font-bold">Zoho {activeItem?.name} Solution Blueprint</span>
               <Link
                 href={`/industries/${activeItem?.slug}`}

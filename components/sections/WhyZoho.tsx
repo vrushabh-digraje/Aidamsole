@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import {
   Section,
   type SectionSpacing,
@@ -22,6 +23,7 @@ const benefits = [
     icon: "connected" as const,
     accentColor: "border-l-blue-500 text-blue-600 bg-blue-50/40",
     badge: "Automation",
+    bgImage: "/brand/platform-creator.jpg",
     illustration: (
       <div className="relative h-full w-full flex items-center justify-center p-6 bg-blue-50/20 rounded-2xl min-h-[260px]">
         {/* Workflow visual diagram */}
@@ -52,6 +54,7 @@ const benefits = [
     icon: "people" as const,
     accentColor: "border-l-amber-500 text-amber-600 bg-amber-50/40",
     badge: "Sales Pipeline",
+    bgImage: "/brand/solution-sales.jpg",
     illustration: (
       <div className="relative h-full w-full flex items-center justify-center p-6 bg-amber-50/20 rounded-2xl min-h-[260px]">
         {/* CRM Lead profile card */}
@@ -84,6 +87,7 @@ const benefits = [
     icon: "building" as const,
     accentColor: "border-l-red-500 text-red-600 bg-red-50/40",
     badge: "HR Management",
+    bgImage: "/brand/platform-people.jpg",
     illustration: (
       <div className="relative h-full w-full flex items-center justify-center p-6 bg-red-50/20 rounded-2xl min-h-[260px]">
         {/* Attendance Check-in Widget */}
@@ -116,6 +120,7 @@ const benefits = [
     icon: "process" as const,
     accentColor: "border-l-indigo-500 text-indigo-600 bg-indigo-50/40",
     badge: "Inventory & Stocks",
+    bgImage: "/brand/platform-campaigns.jpg",
     illustration: (
       <div className="relative h-full w-full flex items-center justify-center p-6 bg-indigo-50/20 rounded-2xl min-h-[260px]">
         {/* Product Stock card */}
@@ -145,6 +150,7 @@ const benefits = [
     icon: "market" as const,
     accentColor: "border-l-emerald-500 text-emerald-600 bg-emerald-50/40",
     badge: "Live Dashboards",
+    bgImage: "/brand/platform-analytics.jpg",
     illustration: (
       <div className="relative h-full w-full flex items-center justify-center p-6 bg-emerald-50/20 rounded-2xl min-h-[260px]">
         {/* Analytics bar chart card */}
@@ -172,6 +178,7 @@ const benefits = [
     icon: "check" as const,
     accentColor: "border-l-violet-500 text-violet-600 bg-violet-50/40",
     badge: "Cost Consolidation",
+    bgImage: "/brand/solution-finance.jpg",
     illustration: (
       <div className="relative h-full w-full flex items-center justify-center p-6 bg-violet-50/20 rounded-2xl min-h-[260px]">
         {/* Cost Comparison Matrix */}
@@ -286,8 +293,18 @@ export function WhyZoho({
         {/* Right Side: Showcase Preview Window (Takes 7/12 columns on large screens) */}
         <div className="h-full flex flex-col justify-center lg:col-span-7 w-full">
           <div className="w-full rounded-2xl border border-gray-200/90 bg-white p-6 shadow-md relative overflow-hidden flex flex-col justify-between min-h-[340px]">
+            {/* Subtle background image watermark */}
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none transition-all duration-700 select-none">
+              <Image
+                src={activeBenefit.bgImage}
+                alt=""
+                fill
+                className="object-cover transition-opacity duration-700"
+              />
+            </div>
+
             {/* Header Area */}
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3 relative z-10">
               <div className="flex gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-red-400/80"></span>
                 <span className="h-3 w-3 rounded-full bg-yellow-400/80"></span>
@@ -299,12 +316,12 @@ export function WhyZoho({
             </div>
 
             {/* Render illustration center */}
-            <div className="my-auto flex items-center justify-center py-4">
+            <div className="my-auto flex items-center justify-center py-4 relative z-10">
               {activeBenefit.illustration}
             </div>
 
             {/* Bottom Captions */}
-            <div className="border-t border-gray-100 pt-3 text-center">
+            <div className="border-t border-gray-100 pt-3 text-center relative z-10">
               <p className="text-[11px] font-bold text-gray-900 leading-tight">
                 {activeBenefit.title}
               </p>

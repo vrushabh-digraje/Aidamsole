@@ -41,60 +41,12 @@ export default function ContactPage() {
     <div className="border-b border-gray-200 bg-white">
       <FaqJsonLd items={contactFaqs} />
 
-      {/* 1. 2-Column Hero Intro Section */}
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center pb-16 border-b border-gray-100 mb-16">
-          
-          {/* Left Column: Title & Description */}
-          <div className="max-w-xl">
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">
-              Contact
-            </p>
-            <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-              Book a System Audit
-            </h1>
-            <p className="mt-5 text-base leading-relaxed text-gray-600 sm:text-lg">
-              Tell us how you run sales, operations, and finance today — we&apos;ll
-              map the Zoho system that fits.
-            </p>
-            
-            {/* Inline Quick Info Links */}
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-              <a
-                href={SITE.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-bold text-primary no-underline hover:underline"
-              >
-                View location on Google Maps →
-              </a>
-              <span className="text-gray-300" aria-hidden="true">|</span>
-              <a
-                href={`mailto:${SITE.email}`}
-                className="font-bold text-primary no-underline hover:underline"
-              >
-                {SITE.email}
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Hero Showcase Image (Sharp corners) */}
-          <div className="relative aspect-[3/2] w-full overflow-hidden rounded-none border border-gray-200 shadow-xl ring-1 ring-black/5 transition-transform duration-500 hover:scale-[1.01] hover:shadow-2xl bg-gray-50">
-            <Image
-              src="/brand/contact-hero.jpg"
-              alt="Zoho Analytics Control Panel System Audit Showcase"
-              fill
-              priority
-              className="object-cover rounded-none"
-              sizes="(max-w-7xl) 50vw, 100vw"
-            />
-            {/* Tech gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/5 via-transparent to-transparent pointer-events-none" />
-          </div>
-        </div>
+      <div className="mx-auto max-w-7xl px-6 pb-16 pt-6 md:pb-20 md:pt-8">
+        {/* 1. Form Section at the top with slight top spacing */}
+        <ContactExpertForm className="pt-0 md:pt-0 mb-16" />
 
         {/* 2. Region Cards Title */}
-        <div className="mb-8">
+        <div className="mb-8 border-t border-gray-100 pt-16">
           <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
             Regional Office Hubs
           </h2>
@@ -104,7 +56,7 @@ export default function ContactPage() {
         </div>
 
         {/* 3. Regional Office Cards (Sharp, Interactive, matching About page) */}
-        <div className="grid gap-6 md:grid-cols-2 md:gap-8 mb-16">
+        <div className="grid gap-6 md:grid-cols-2 md:gap-8">
           
           {/* India Card */}
           <div className="group relative flex flex-col justify-between rounded-none border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary overflow-hidden">
@@ -178,8 +130,20 @@ export default function ContactPage() {
 
         </div>
 
-        {/* 4. Form Section */}
-        <ContactExpertForm className="pt-0 border-t border-gray-100" />
+        {/* 4. Map Section (India Office Only) */}
+        <div className="mt-8 mb-16">
+          <div className="rounded-none border border-gray-200 overflow-hidden aspect-[16/10] md:aspect-[21/7] w-full shadow-sm bg-gray-50 relative group">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2029.9490117203281!2d73.94093145710526!3d18.995840033285702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdd3b989902226d%3A0x738b0fb9a230ad82!2sAIDAMSOLE%20AGILE%20SERVICES%20PRIVATE%20LIMITED%20%7C%20Damsole%20Technologies%20-%20Top%20Digital%20Agency!5e1!3m2!1sen!2sus!4v1786691067244!5m2!1sen!2sus"
+              className="w-full h-full border-0"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Aidamsole India Office Location Map"
+            />
+          </div>
+        </div>
+
       </div>
 
       <Faq
