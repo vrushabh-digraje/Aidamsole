@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
-const senderEmail = process.env.SENDER_EMAIL ?? "onboarding@resend.dev";
+const senderEmail = process.env.SENDER_EMAIL ?? "vrushabhdigraje01@gmail.com";
 
 type AssessmentEmailContext = {
   assessmentId: string;
