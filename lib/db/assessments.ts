@@ -67,12 +67,18 @@ export async function saveAssessment(
     timestamp: input.timestamp ?? new Date().toISOString(),
   };
 
+  // Skip filesystem persistence on Vercel production to keep logs clean
+  if (process.env.VERCEL) {
+    console.log("[db:assessments] Vercel environment detected. Skipping local file write.");
+    return record;
+  }
+
   try {
     const records = await readAssessments();
     records.push(record);
     await writeAssessments(records);
   } catch (error) {
-    console.error("Local file persist failed (read-only filesystem on Vercel):", error);
+    console.warn("Local file persist failed:", error);
   }
 
   return record;
