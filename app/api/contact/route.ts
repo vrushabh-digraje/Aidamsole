@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { saveContact } from "@/lib/db/contacts";
 import { trackAnalyticsEvent } from "@/lib/utils";
 import { createContactZohoLead } from "@/lib/zoho";
+import { sendContactEmails } from "@/lib/email";
 
 type ContactPayload = {
   firstName: string;
@@ -138,6 +139,20 @@ export async function POST(request: Request) {
       service: payload.service,
     },
   });
+
+  try {
+    await sendContactEmails({
+      contactId: saved.id,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+      phone: payload.phone,
+      service: payload.service,
+      message: payload.message,
+    });
+  } catch (error) {
+    console.error("Failed to send contact notification email:", error);
+  }
 
   let leadId: string | null = null;
 

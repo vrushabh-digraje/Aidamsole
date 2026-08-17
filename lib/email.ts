@@ -22,7 +22,7 @@ type EmailResult = {
 export async function sendAssessmentEmails(
   context: AssessmentEmailContext,
 ): Promise<EmailResult> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "sales@aidamsole.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "suyog@damsole.com";
 
   console.log("[email:mock:admin]", {
     to: adminTo,
@@ -62,5 +62,41 @@ export async function sendAssessmentEmails(
   return {
     adminSent: true,
     userSent,
+  };
+}
+
+export type ContactEmailContext = {
+  contactId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+};
+
+export async function sendContactEmails(
+  context: ContactEmailContext,
+): Promise<{ adminSent: boolean }> {
+  const adminTo = process.env.ADMIN_EMAIL ?? "suyog@damsole.com";
+
+  console.log("[email:mock:admin:contact]", {
+    to: adminTo,
+    subject: `New website contact message from ${context.firstName} ${context.lastName}`,
+    body: [
+      "A new website contact message was submitted.",
+      "",
+      `ID: ${context.contactId}`,
+      `Name: ${context.firstName} ${context.lastName}`,
+      `Email: ${context.email}`,
+      `Phone: ${context.phone}`,
+      `Service Requested: ${context.service}`,
+      `Message:`,
+      context.message,
+    ].join("\n"),
+  });
+
+  return {
+    adminSent: true,
   };
 }
