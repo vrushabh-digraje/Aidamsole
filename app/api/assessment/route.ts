@@ -9,7 +9,7 @@ import {
   trackAnalyticsEvent,
 } from "@/lib/utils";
 import { sendWhatsAppMessage } from "@/lib/whatsapp";
-import { createZohoLead } from "@/lib/zoho";
+import { createZohoLead, isZohoConfigured } from "@/lib/zoho";
 
 type AssessmentPayload = {
   companySize: string;
@@ -138,49 +138,37 @@ export async function POST(request: Request) {
     userEmail: payload.email,
   });
 
-  try {
-    const lead = await createZohoLead({
-      companySize: payload.companySize,
-      industry: payload.industry,
-      leads: payload.leads,
-      system: payload.system,
-      challenge: payload.challenge,
-      tag,
-    });
+  let leadId: string | null = null;
 
-    return NextResponse.json({
-      success: true,
-      id: saved.id,
-      leadId: lead.id ?? null,
-      score,
-      tag,
-      timestamp: saved.timestamp,
-      whatsapp: {
-        sent: whatsapp.sent,
-        message: whatsapp.message,
-      },
-      email,
-    });
-  } catch (error) {
-    console.error("Zoho lead creation failed:", error);
-
-    // Assessment is already persisted locally even if Zoho fails.
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to create lead in Zoho CRM",
-        id: saved.id,
-        score,
+  if (isZohoConfigured()) {
+    try {
+      const lead = await createZohoLead({
+        companySize: payload.companySize,
+        industry: payload.industry,
+        leads: payload.leads,
+        system: payload.system,
+        challenge: payload.challenge,
         tag,
-        timestamp: saved.timestamp,
-        saved: true,
-        whatsapp: {
-          sent: whatsapp.sent,
-          message: whatsapp.message,
-        },
-        email,
-      },
-      { status: 502 },
-    );
+      });
+      leadId = lead.id ?? null;
+    } catch (error) {
+      console.error("Zoho lead creation failed:", error);
+    }
+  } else {
+    console.log("[zoho:mock] Zoho environment variables are not configured. Skipping CRM lead creation.");
   }
+
+  return NextResponse.json({
+    success: true,
+    id: saved.id,
+    leadId,
+    score,
+    tag,
+    timestamp: saved.timestamp,
+    whatsapp: {
+      sent: whatsapp.sent,
+      message: whatsapp.message,
+    },
+    email,
+  });
 }

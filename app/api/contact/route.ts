@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { saveContact } from "@/lib/db/contacts";
 import { trackAnalyticsEvent } from "@/lib/utils";
-import { createContactZohoLead } from "@/lib/zoho";
+import { createContactZohoLead, isZohoConfigured } from "@/lib/zoho";
 import { sendContactEmails } from "@/lib/email";
 
 type ContactPayload = {
@@ -156,19 +156,23 @@ export async function POST(request: Request) {
 
   let leadId: string | null = null;
 
-  try {
-    const lead = await createContactZohoLead({
-      firstName: payload.firstName,
-      lastName: payload.lastName,
-      email: payload.email,
-      phone: payload.phone,
-      service: payload.service,
-      message: payload.message,
-    });
-    leadId = lead.id ?? null;
-  } catch (error) {
-    // Local save is the source of truth when Zoho is unavailable.
-    console.error("Zoho contact lead creation failed:", error);
+  if (isZohoConfigured()) {
+    try {
+      const lead = await createContactZohoLead({
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        email: payload.email,
+        phone: payload.phone,
+        service: payload.service,
+        message: payload.message,
+      });
+      leadId = lead.id ?? null;
+    } catch (error) {
+      // Local save is the source of truth when Zoho is unavailable.
+      console.error("Zoho contact lead creation failed:", error);
+    }
+  } else {
+    console.log("[zoho:mock] Zoho environment variables are not configured. Skipping CRM lead creation.");
   }
 
   return NextResponse.json({

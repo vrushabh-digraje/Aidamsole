@@ -134,3 +134,13 @@ export async function createContactZohoLead(
     Description: `Service: ${input.service}\n\n${input.message}`,
   });
 }
+
+export function isZohoConfigured(): boolean {
+  return !!(
+    process.env.ZOHO_CLIENT_ID &&
+    process.env.ZOHO_CLIENT_SECRET &&
+    process.env.ZOHO_REFRESH_TOKEN &&
+    process.env.ZOHO_ACCOUNTS_URL &&
+    process.env.ZOHO_API_DOMAIN
+  );
+}
