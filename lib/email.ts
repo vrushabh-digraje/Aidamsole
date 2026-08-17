@@ -28,7 +28,7 @@ type EmailResult = {
 export async function sendAssessmentEmails(
   context: AssessmentEmailContext,
 ): Promise<EmailResult> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje07@gmail.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "suyog@damsole.com";
   
   const adminBody = [
     "A new assessment was submitted.",
@@ -131,7 +131,7 @@ export type ContactEmailContext = {
 export async function sendContactEmails(
   context: ContactEmailContext,
 ): Promise<{ adminSent: boolean }> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje07@gmail.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "suyog@damsole.com";
 
   const adminBody = [
     "A new website contact message was submitted.",
