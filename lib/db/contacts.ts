@@ -65,9 +65,13 @@ export async function saveContact(
     timestamp: input.timestamp ?? new Date().toISOString(),
   };
 
-  const records = await readContacts();
-  records.push(record);
-  await writeContacts(records);
+  try {
+    const records = await readContacts();
+    records.push(record);
+    await writeContacts(records);
+  } catch (error) {
+    console.error("Local file persist failed (read-only filesystem on Vercel):", error);
+  }
 
   return record;
 }

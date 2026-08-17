@@ -67,9 +67,13 @@ export async function saveAssessment(
     timestamp: input.timestamp ?? new Date().toISOString(),
   };
 
-  const records = await readAssessments();
-  records.push(record);
-  await writeAssessments(records);
+  try {
+    const records = await readAssessments();
+    records.push(record);
+    await writeAssessments(records);
+  } catch (error) {
+    console.error("Local file persist failed (read-only filesystem on Vercel):", error);
+  }
 
   return record;
 }
