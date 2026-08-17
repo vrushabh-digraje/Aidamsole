@@ -47,15 +47,19 @@ export async function sendAssessmentEmails(
 
   if (resend) {
     try {
-      await resend.emails.send({
+      const response = await resend.emails.send({
         from: `Aidamsole Audit <${senderEmail}>`,
         to: adminTo,
         subject: `New assessment submission (${context.tag})`,
         text: adminBody,
       });
-      adminSent = true;
+      if (response.error) {
+        console.error("Resend admin assessment email failed:", response.error);
+      } else {
+        adminSent = true;
+      }
     } catch (error) {
-      console.error("Resend admin assessment email failed:", error);
+      console.error("Resend admin assessment email exception:", error);
     }
   } else {
     console.log("[email:mock:admin]", {
@@ -80,15 +84,19 @@ export async function sendAssessmentEmails(
 
     if (resend) {
       try {
-        await resend.emails.send({
+        const response = await resend.emails.send({
           from: `Aidamsole <${senderEmail}>`,
           to: context.userEmail,
           subject: "We received your system assessment request",
           text: userBody,
         });
-        userSent = true;
+        if (response.error) {
+          console.error("Resend user assessment confirmation failed:", response.error);
+        } else {
+          userSent = true;
+        }
       } catch (error) {
-        console.error("Resend user assessment confirmation failed:", error);
+        console.error("Resend user assessment confirmation exception:", error);
       }
     } else {
       console.log("[email:mock:user]", {
@@ -141,15 +149,19 @@ export async function sendContactEmails(
 
   if (resend) {
     try {
-      await resend.emails.send({
+      const response = await resend.emails.send({
         from: `Aidamsole Contact <${senderEmail}>`,
         to: adminTo,
         subject: `New website contact message from ${context.firstName} ${context.lastName}`,
         text: adminBody,
       });
-      adminSent = true;
+      if (response.error) {
+        console.error("Resend admin contact email failed:", response.error);
+      } else {
+        adminSent = true;
+      }
     } catch (error) {
-      console.error("Resend admin contact email failed:", error);
+      console.error("Resend admin contact email exception:", error);
     }
   } else {
     console.log("[email:mock:admin:contact]", {
