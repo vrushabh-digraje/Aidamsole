@@ -1,3 +1,9 @@
+import { Resend } from "resend";
+
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
+const senderEmail = process.env.SENDER_EMAIL ?? "onboarding@resend.dev";
+
 type AssessmentEmailContext = {
   assessmentId: string;
   companySize: string;
@@ -16,51 +22,86 @@ type EmailResult = {
 };
 
 /**
- * Placeholder email notifications.
- * Replace with Resend / SES / SMTP later.
+ * Sends assessment form notification emails using Resend.
+ * Fallbacks to console logs if RESEND_API_KEY is not defined.
  */
 export async function sendAssessmentEmails(
   context: AssessmentEmailContext,
 ): Promise<EmailResult> {
   const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje01@gmail.com";
+  
+  const adminBody = [
+    "A new assessment was submitted.",
+    "",
+    `ID: ${context.assessmentId}`,
+    `Industry: ${context.industry}`,
+    `Company size: ${context.companySize}`,
+    `Monthly leads: ${context.leads}`,
+    `Current system: ${context.system}`,
+    `Score: ${context.score}`,
+    `Tag: ${context.tag}`,
+    `Challenge: ${context.challenge}`,
+  ].join("\n");
 
-  console.log("[email:mock:admin]", {
-    to: adminTo,
-    subject: `New assessment submission (${context.tag})`,
-    body: [
-      "A new assessment was submitted.",
-      "",
-      `ID: ${context.assessmentId}`,
-      `Industry: ${context.industry}`,
-      `Company size: ${context.companySize}`,
-      `Monthly leads: ${context.leads}`,
-      `Current system: ${context.system}`,
-      `Score: ${context.score}`,
-      `Tag: ${context.tag}`,
-      `Challenge: ${context.challenge}`,
-    ].join("\n"),
-  });
+  let adminSent = false;
+
+  if (resend) {
+    try {
+      await resend.emails.send({
+        from: `Aidamsole Audit <${senderEmail}>`,
+        to: adminTo,
+        subject: `New assessment submission (${context.tag})`,
+        text: adminBody,
+      });
+      adminSent = true;
+    } catch (error) {
+      console.error("Resend admin assessment email failed:", error);
+    }
+  } else {
+    console.log("[email:mock:admin]", {
+      to: adminTo,
+      subject: `New assessment submission (${context.tag})`,
+      body: adminBody,
+    });
+    adminSent = true;
+  }
 
   let userSent = false;
 
   if (context.userEmail) {
-    console.log("[email:mock:user]", {
-      to: context.userEmail,
-      subject: "We received your system assessment request",
-      body: [
-        "Hi,",
-        "",
-        "Thank you for submitting your assessment.",
-        "Our team will review your system details and connect shortly.",
-        "",
-        `Reference: ${context.assessmentId}`,
-      ].join("\n"),
-    });
-    userSent = true;
+    const userBody = [
+      "Hi,",
+      "",
+      "Thank you for submitting your assessment.",
+      "Our team will review your system details and connect shortly.",
+      "",
+      `Reference: ${context.assessmentId}`,
+    ].join("\n");
+
+    if (resend) {
+      try {
+        await resend.emails.send({
+          from: `Aidamsole <${senderEmail}>`,
+          to: context.userEmail,
+          subject: "We received your system assessment request",
+          text: userBody,
+        });
+        userSent = true;
+      } catch (error) {
+        console.error("Resend user assessment confirmation failed:", error);
+      }
+    } else {
+      console.log("[email:mock:user]", {
+        to: context.userEmail,
+        subject: "We received your system assessment request",
+        body: userBody,
+      });
+      userSent = true;
+    }
   }
 
   return {
-    adminSent: true,
+    adminSent,
     userSent,
   };
 }
@@ -75,28 +116,51 @@ export type ContactEmailContext = {
   message: string;
 };
 
+/**
+ * Sends contact form notification emails using Resend.
+ * Fallbacks to console logs if RESEND_API_KEY is not defined.
+ */
 export async function sendContactEmails(
   context: ContactEmailContext,
 ): Promise<{ adminSent: boolean }> {
   const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje01@gmail.com";
 
-  console.log("[email:mock:admin:contact]", {
-    to: adminTo,
-    subject: `New website contact message from ${context.firstName} ${context.lastName}`,
-    body: [
-      "A new website contact message was submitted.",
-      "",
-      `ID: ${context.contactId}`,
-      `Name: ${context.firstName} ${context.lastName}`,
-      `Email: ${context.email}`,
-      `Phone: ${context.phone}`,
-      `Service Requested: ${context.service}`,
-      `Message:`,
-      context.message,
-    ].join("\n"),
-  });
+  const adminBody = [
+    "A new website contact message was submitted.",
+    "",
+    `ID: ${context.contactId}`,
+    `Name: ${context.firstName} ${context.lastName}`,
+    `Email: ${context.email}`,
+    `Phone: ${context.phone}`,
+    `Service Requested: ${context.service}`,
+    `Message:`,
+    context.message,
+  ].join("\n");
+
+  let adminSent = false;
+
+  if (resend) {
+    try {
+      await resend.emails.send({
+        from: `Aidamsole Contact <${senderEmail}>`,
+        to: adminTo,
+        subject: `New website contact message from ${context.firstName} ${context.lastName}`,
+        text: adminBody,
+      });
+      adminSent = true;
+    } catch (error) {
+      console.error("Resend admin contact email failed:", error);
+    }
+  } else {
+    console.log("[email:mock:admin:contact]", {
+      to: adminTo,
+      subject: `New website contact message from ${context.firstName} ${context.lastName}`,
+      body: adminBody,
+    });
+    adminSent = true;
+  }
 
   return {
-    adminSent: true,
+    adminSent,
   };
 }
