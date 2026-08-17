@@ -22,7 +22,7 @@ type EmailResult = {
 export async function sendAssessmentEmails(
   context: AssessmentEmailContext,
 ): Promise<EmailResult> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "suyog@damsole.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje01@gmail.com";
 
   console.log("[email:mock:admin]", {
     to: adminTo,
@@ -78,7 +78,7 @@ export type ContactEmailContext = {
 export async function sendContactEmails(
   context: ContactEmailContext,
 ): Promise<{ adminSent: boolean }> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "suyog@damsole.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje01@gmail.com";
 
   console.log("[email:mock:admin:contact]", {
     to: adminTo,
