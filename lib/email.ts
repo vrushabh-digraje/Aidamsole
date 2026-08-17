@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
-const senderEmail = process.env.SENDER_EMAIL ?? "vrushabhdigraje01@gmail.com";
+const senderEmail = process.env.SENDER_EMAIL ?? "vrushabhdigraje07@gmail.com";
 
 type AssessmentEmailContext = {
   assessmentId: string;
@@ -28,7 +28,7 @@ type EmailResult = {
 export async function sendAssessmentEmails(
   context: AssessmentEmailContext,
 ): Promise<EmailResult> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje01@gmail.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje07@gmail.com";
   
   const adminBody = [
     "A new assessment was submitted.",
@@ -131,7 +131,7 @@ export type ContactEmailContext = {
 export async function sendContactEmails(
   context: ContactEmailContext,
 ): Promise<{ adminSent: boolean }> {
-  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje01@gmail.com";
+  const adminTo = process.env.ADMIN_EMAIL ?? "vrushabhdigraje07@gmail.com";
 
   const adminBody = [
     "A new website contact message was submitted.",
